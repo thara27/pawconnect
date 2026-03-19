@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PawConnect
 
-## Getting Started
+PawConnect is a Next.js + TypeScript + Tailwind app with Supabase auth scaffolding.
 
-First, run the development server:
+## Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Create `.env.local` from `.env.local.example` and fill in your Supabase project credentials.
+
+3. In Supabase, enable `Email` auth provider.
+
+4. In Supabase auth redirect URLs, add:
+
+```text
+http://localhost:3000/auth/callback
+```
+
+5. Start the app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Auth Scaffolding
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Login page: `/login`
+- Signup page: `/signup`
+- Auth callback route: `/auth/callback`
+- Protected dashboard entry: `/dashboard`
+- Pet owner dashboard: `/dashboard/pet-owner`
+- Service provider dashboard: `/dashboard/service-provider`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Middleware behavior:
 
-## Learn More
+- Unauthenticated users visiting `/dashboard*` are redirected to `/login`.
+- Authenticated users visiting `/login` or `/signup` are redirected to `/dashboard`.
+- `/dashboard` automatically redirects to a role-specific dashboard based on `user_type`.
 
-To learn more about Next.js, take a look at the following resources:
+Sign-up stores user metadata including:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `user_type`: `pet_owner` or `service_provider`
+- `full_name`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```text
+app/
+	(auth)/
+		layout.tsx
+		login/page.tsx
+		signup/page.tsx
+	dashboard/
+		page.tsx
+		pet-owner/page.tsx
+		service-provider/page.tsx
+	auth/
+		callback/route.ts
+	layout.tsx
+	page.tsx
+lib/
+	supabase/
+		client.ts
+		middleware.ts
+		server.ts
+	types/
+		auth.ts
+middleware.ts
+```

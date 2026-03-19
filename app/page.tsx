@@ -1,65 +1,149 @@
 import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
+import { createClient } from "@/lib/supabase/server";
+
+function NavLink({ href, label, active = false }: { href: string; label: string; active?: boolean }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+    <Link
+      href={href}
+      className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+        active
+          ? "bg-amber-light text-amber"
+          : "text-[#4A4637] hover:bg-amber-light hover:text-amber"
+      }`}
+    >
+      {label}
+    </Link>
+  );
+}
+
+export default async function Home() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  return (
+    <main className="min-h-screen bg-[#FAFAF7] text-[#1A1A0E]">
+      <header className="sticky top-0 z-30 h-[62px] border-b border-[#F0E4C5] bg-white/95 backdrop-blur">
+        <nav className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4">
+          <Link href="/" className="font-sans text-xl font-bold tracking-tight text-ink">
+            <span aria-hidden="true">🐾 </span>
+            Paw<span className="text-amber">Connect</span>
+          </Link>
+
+          <div className="hidden items-center gap-1 md:flex">
+            <NavLink href="/" label="Home" active />
+            <NavLink href="/search" label="Services" />
+            <NavLink href="/community" label="Community" />
+            <NavLink href="/#about" label="About Us" />
+            <NavLink href="/#contact" label="Contact" />
+          </div>
+
+          <div className="flex items-center gap-3">
+            {user ? (
+              <Link
+                href="/dashboard"
+                className="rounded-lg border border-amber bg-white px-4 py-2 text-sm font-semibold text-amber transition hover:bg-amber-light"
+              >
+                Go to Dashboard →
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="text-sm font-semibold text-[#3D3A2E] transition hover:text-amber"
+                >
+                  Log In
+                </Link>
+                <Link
+                  href="/signup"
+                  className="rounded-lg bg-[linear-gradient(180deg,#F6C14D_0%,#E8920A_100%)] px-4 py-2 text-sm font-semibold text-white shadow-[0_4px_14px_rgba(232,146,10,0.32)] transition hover:brightness-105"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+        </nav>
+      </header>
+
+      <section className="px-3 pb-10 pt-4 sm:px-4 sm:pt-5">
+        <div className="relative mx-auto h-[560px] w-full max-w-7xl overflow-hidden rounded-[32px] bg-[#FFF8E7] shadow-[0_24px_80px_rgba(187,132,42,0.24)]">
+          {/* Full-width background image — warm gold behind transparent areas */}
+          <div className="absolute inset-0 z-0 bg-[#FFF0C0]">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+              src="/images/dogbg.png"
+              alt="Dogs playing in park"
+              fill
+              className="object-cover object-center"
+              priority
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
+
+          {/* Gradient overlays: warm cream on left + amber glow on right */}
+          <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#FFF8E7]/95 via-[#FFF8E7]/65 via-40% to-transparent" />
+          <div className="absolute inset-0 z-10 bg-gradient-to-l from-[#FFE082]/25 to-transparent" />
+
+          {/* Hero text */}
+          <div className="relative z-20 flex h-full max-w-lg flex-col justify-center px-8 py-10">
+            <span className="inline-flex w-fit items-center rounded-full border border-[#E7C56F] bg-white px-4 py-1.5 text-xs font-semibold text-[#8B5E00] shadow-sm">
+              🐾 India&apos;s #1 Dog Community
+            </span>
+
+            <h1 className="mt-5 max-w-[520px] font-fraunces text-[2.8rem] font-black leading-[1.1] text-gray-900">
+              Where Every <span className="italic text-amber">Paw</span> Finds Its Pack
+            </h1>
+
+            <p className="mt-3 max-w-[400px] text-[0.92rem] leading-[1.7] text-gray-700">
+              Connect with dog owners, find trusted vets, book grooming and training &mdash; all in one place. Powered by AI to understand your dog&apos;s unique needs.
+            </p>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/search"
+                className="rounded-lg bg-[linear-gradient(180deg,#F6C14D_0%,#E8920A_100%)] px-5 py-2.5 text-sm font-bold text-white shadow-[0_4px_14px_rgba(232,146,10,0.4)] transition hover:brightness-105"
+              >
+                Explore Services
+              </Link>
+              <Link
+                href="/signup"
+                className="rounded-lg border border-[#3D3A2E] bg-white px-5 py-2.5 text-sm font-bold text-[#1A1A0E] transition hover:border-amber hover:text-amber"
+              >
+                Join Community
+              </Link>
+            </div>
+
+            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[0.78rem] font-semibold text-gray-600">
+              <span>&#10003; 10,000+ dog owners</span>
+              <span>&#10003; 500+ verified vets</span>
+              <span>&#10003; Free to join</span>
+            </div>
+          </div>
+
+          {/* Bottom wave */}
+          <div className="absolute bottom-0 left-0 right-0 z-30 h-12 rounded-t-[50%] bg-[#FAFAF7]" />
         </div>
-      </main>
-    </div>
+      </section>
+
+      <section id="about" className="mx-auto grid w-full max-w-7xl gap-5 px-4 py-4 md:grid-cols-3">
+        <article className="rounded-3xl border border-[#EFE6CF] bg-white p-6 shadow-sm">
+          <p className="text-2xl">🩺</p>
+          <h2 className="mt-3 font-fraunces text-2xl font-bold text-[#1A1A0E]">Trusted services</h2>
+          <p className="mt-2 text-sm leading-7 text-[#5A5542]">Find verified vets, trainers, walkers and groomers tailored to your city and your dog.</p>
+        </article>
+        <article className="rounded-3xl border border-[#EFE6CF] bg-white p-6 shadow-sm">
+          <p className="text-2xl">🤖</p>
+          <h2 className="mt-3 font-fraunces text-2xl font-bold text-[#1A1A0E]">AI guidance</h2>
+          <p className="mt-2 text-sm leading-7 text-[#5A5542]">Get breed-aware care tips, health reminders, and suggestions tuned for Indian weather and routines.</p>
+        </article>
+        <article id="contact" className="rounded-3xl border border-[#EFE6CF] bg-white p-6 shadow-sm">
+          <p className="text-2xl">👥</p>
+          <h2 className="mt-3 font-fraunces text-2xl font-bold text-[#1A1A0E]">Real community</h2>
+          <p className="mt-2 text-sm leading-7 text-[#5A5542]">Meet dog lovers, discover local events, and build a support system for every walk, vet visit, and wag.</p>
+        </article>
+      </section>
+    </main>
   );
 }
