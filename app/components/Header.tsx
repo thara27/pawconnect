@@ -4,8 +4,11 @@ import { NavBar } from "@/app/components/NavBar";
 export async function Header() {
   const supabase = await createClient();
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  return <NavBar isLoggedIn={!!user} />;
+  const isLoggedIn = !!session;
+  const userRole = (session?.user?.user_metadata?.user_type as string | undefined) || null;
+
+  return <NavBar isLoggedIn={isLoggedIn} userRole={userRole} />;
 }
