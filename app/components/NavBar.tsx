@@ -56,6 +56,7 @@ function getNavItems(isLoggedIn: boolean, userRole: UserRole): NavItem[] {
       { href: "/dashboard/pet-owner/pets", label: "My Dogs" },
       { href: "/dashboard/pet-owner/search", label: "Services" },
       { href: "/dashboard/pet-owner/bookings", label: "Bookings" },
+      { href: "/breeds", label: "Breeds" },
       { href: "/community", label: "Community" },
     ];
   }
@@ -65,12 +66,14 @@ function getNavItems(isLoggedIn: boolean, userRole: UserRole): NavItem[] {
       { href: "/dashboard/service-provider", label: "Home" },
       { href: "/dashboard/service-provider/profile", label: "My Profile" },
       { href: "/dashboard/service-provider/bookings", label: "Bookings" },
+      { href: "/breeds", label: "Breeds" },
       { href: "/community", label: "Community" },
     ];
   }
 
   return [
     { href: "/dashboard", label: "Home" },
+    { href: "/breeds", label: "Breeds" },
     { href: "/community", label: "Community" },
   ];
 }
@@ -130,6 +133,20 @@ export function NavBar({
       window.clearTimeout(timeoutId);
     };
   }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     const loadUnreadCount = async () => {
@@ -281,8 +298,16 @@ export function NavBar({
       </nav>
 
       {menuOpen ? (
-        <div className="fixed inset-0 z-[100] flex flex-col bg-white">
-          <div className="flex items-center justify-between border-b border-slate-200 px-4 py-4">
+        <div className="fixed inset-0 z-[120] md:hidden">
+          <button
+            type="button"
+            onClick={() => setMenuOpen(false)}
+            className="absolute inset-0 bg-black/30"
+            aria-label="Close menu backdrop"
+          />
+
+          <div className="absolute inset-0 flex flex-col bg-white text-slate-900 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 px-4 py-4">
             <Link
               href="/"
               className="font-sans text-xl font-bold tracking-tight text-ink"
@@ -299,10 +324,10 @@ export function NavBar({
             >
               ×
             </button>
-          </div>
+            </div>
 
-          <div className="flex flex-1 flex-col px-4 py-4">
-            <div className="space-y-2">
+            <div className="flex flex-1 flex-col overflow-y-auto px-4 py-4">
+              <div className="space-y-2">
               {navItems.map(({ href, label }) => {
                 const active = pathname === href || (href !== "/" && pathname.startsWith(href));
                 return (
@@ -349,35 +374,36 @@ export function NavBar({
                   </Link>
                 </>
               ) : null}
-            </div>
+              </div>
 
-            <div className="mt-auto space-y-3 pb-4">
-              {isLoggedIn ? (
-                <button
-                  type="button"
-                  onClick={handleSignOut}
-                  className="flex min-h-12 w-full items-center justify-center rounded-lg border border-red-200 bg-red-50 px-4 text-base font-semibold text-red-600"
-                >
-                  Sign Out
-                </button>
-              ) : (
-                <>
-                  <Link
-                    href="/login"
-                    onClick={() => setMenuOpen(false)}
-                    className="flex min-h-12 items-center justify-center rounded-lg border border-slate-300 px-4 text-base font-semibold text-[#3D3A2E]"
+              <div className="mt-auto space-y-3 pb-4 pt-6">
+                {isLoggedIn ? (
+                  <button
+                    type="button"
+                    onClick={handleSignOut}
+                    className="flex min-h-12 w-full items-center justify-center rounded-lg border border-red-200 bg-red-50 px-4 text-base font-semibold text-red-600"
                   >
-                    Log In
-                  </Link>
-                  <Link
-                    href="/signup"
-                    onClick={() => setMenuOpen(false)}
-                    className="flex min-h-12 items-center justify-center rounded-lg bg-[linear-gradient(180deg,#F6C14D_0%,#E8920A_100%)] px-4 text-base font-semibold text-white"
-                  >
-                    Sign Up
-                  </Link>
-                </>
-              )}
+                    Sign Out
+                  </button>
+                ) : (
+                  <>
+                    <Link
+                      href="/login"
+                      onClick={() => setMenuOpen(false)}
+                      className="flex min-h-12 items-center justify-center rounded-lg border border-slate-300 px-4 text-base font-semibold text-[#3D3A2E]"
+                    >
+                      Log In
+                    </Link>
+                    <Link
+                      href="/signup"
+                      onClick={() => setMenuOpen(false)}
+                      className="flex min-h-12 items-center justify-center rounded-lg bg-[linear-gradient(180deg,#F6C14D_0%,#E8920A_100%)] px-4 text-base font-semibold text-white"
+                    >
+                      Sign Up
+                    </Link>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>

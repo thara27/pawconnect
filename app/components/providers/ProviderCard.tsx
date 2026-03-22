@@ -151,12 +151,24 @@ export default function ProviderCard({ provider }: Props) {
           />
           {provider.is_available ? "Available today" : "Unavailable"}
         </span>
-        <Link
-          href={`/dashboard/pet-owner/providers/${provider.id}`}
-          className="rounded-full bg-orange px-5 py-2 text-sm font-bold text-white transition hover:bg-orange-dark"
-        >
-          View profile
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/dashboard/pet-owner/providers/${provider.id}`}
+            className="rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+          >
+            View profile
+          </Link>
+          <Link
+            href={`/dashboard/pet-owner/providers/${provider.id}/book`}
+            className={`rounded-full px-5 py-2 text-sm font-bold text-white transition ${
+              provider.is_available
+                ? "bg-orange hover:bg-orange-dark"
+                : "bg-slate-400 hover:bg-slate-500"
+            }`}
+          >
+            Book now
+          </Link>
+        </div>
       </div>
     </article>
   );
