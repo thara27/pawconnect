@@ -45,7 +45,10 @@ export function ContactForm() {
       const result = await submitContactForm(formData);
 
       if (result.success) {
-        setMessage({ type: "success", text: result.message });
+        setMessage({
+          type: "success",
+          text: result.message ?? "Thank you for reaching out. We will get back to you soon.",
+        });
         setFormData({ name: "", email: "", subject: "", message: "" });
       } else {
         setMessage({ type: "error", text: result.error || "Something went wrong" });
