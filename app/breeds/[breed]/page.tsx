@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { headers } from "next/headers";
 
+import { fetchBreedProfile, slugifyBreed } from "@/lib/data/breeds";
 import SignupNudge from "@/app/components/ui/SignupNudge";
-import type { BreedProfile } from "@/lib/types/breed";
 
 function TraitBar({ label, value }: { label: string; value: number }) {
   const clampedValue = Math.max(0, Math.min(5, Math.round(value)));
@@ -36,18 +35,8 @@ export default async function BreedProfilePage({
   params: Promise<{ breed: string }>;
 }) {
   const { breed } = await params;
-  const headerStore = await headers();
-  const host = headerStore.get("host") ?? "localhost:3000";
-  const proto = headerStore.get("x-forwarded-proto") ?? "http";
-  const response = await fetch(`${proto}://${host}/api/breeds/${encodeURIComponent(breed)}`, {
-    next: { revalidate: 60 * 60 * 24 },
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to load breed profile.");
-  }
-
-  const profile = (await response.json()) as BreedProfile;
+  const breedSlug = slugifyBreed(decodeURIComponent(breed));
+  const profile = await fetchBreedProfile(breedSlug);
 
   return (
     <main className="min-h-screen bg-[#FDF8F3] px-4 py-10">

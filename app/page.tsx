@@ -1,74 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { createClient } from "@/lib/supabase/server";
-
-function NavLink({ href, label, active = false }: { href: string; label: string; active?: boolean }) {
-  return (
-    <Link
-      href={href}
-      className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-        active
-          ? "bg-amber-light text-amber"
-          : "text-[#4A4637] hover:bg-amber-light hover:text-amber"
-      }`}
-    >
-      {label}
-    </Link>
-  );
-}
-
 export default async function Home() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
   return (
     <main className="min-h-screen bg-[#FAFAF7] text-[#1A1A0E]">
-      <header className="sticky top-0 z-30 h-[62px] border-b border-[#F0E4C5] bg-white/95 backdrop-blur">
-        <nav className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4">
-          <Link href="/" className="font-sans text-xl font-bold tracking-tight text-ink">
-            <span aria-hidden="true">🐾 </span>
-            Paw<span className="text-amber">Connect</span>
-          </Link>
-
-          <div className="hidden items-center gap-1 md:flex">
-            <NavLink href="/" label="Home" active />
-            <NavLink href="/search" label="Services" />
-            <NavLink href="/community" label="Community" />
-            <NavLink href="/#about" label="About Us" />
-            <NavLink href="/#contact" label="Contact" />
-          </div>
-
-          <div className="flex items-center gap-3">
-            {user ? (
-              <Link
-                href="/dashboard"
-                className="rounded-lg border border-amber bg-white px-4 py-2 text-sm font-semibold text-amber transition hover:bg-amber-light"
-              >
-                Go to Dashboard →
-              </Link>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="text-sm font-semibold text-[#3D3A2E] transition hover:text-amber"
-                >
-                  Log In
-                </Link>
-                <Link
-                  href="/signup"
-                  className="rounded-lg bg-[linear-gradient(180deg,#F6C14D_0%,#E8920A_100%)] px-4 py-2 text-sm font-semibold text-white shadow-[0_4px_14px_rgba(232,146,10,0.32)] transition hover:brightness-105"
-                >
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </div>
-        </nav>
-      </header>
-
       <section className="px-3 pb-10 pt-4 sm:px-4 sm:pt-5">
         <div className="relative mx-auto h-[560px] w-full max-w-7xl overflow-hidden rounded-[32px] bg-[#FFF8E7] shadow-[0_24px_80px_rgba(187,132,42,0.24)]">
           {/* Full-width background image — warm gold behind transparent areas */}
@@ -138,12 +74,48 @@ export default async function Home() {
           <h2 className="mt-3 font-fraunces text-2xl font-bold text-[#1A1A0E]">AI guidance</h2>
           <p className="mt-2 text-sm leading-7 text-[#5A5542]">Get breed-aware care tips, health reminders, and suggestions tuned for Indian weather and routines.</p>
         </article>
-        <article id="contact" className="rounded-3xl border border-[#EFE6CF] bg-white p-6 shadow-sm">
+        <article className="rounded-3xl border border-[#EFE6CF] bg-white p-6 shadow-sm">
           <p className="text-2xl">👥</p>
           <h2 className="mt-3 font-fraunces text-2xl font-bold text-[#1A1A0E]">Real community</h2>
           <p className="mt-2 text-sm leading-7 text-[#5A5542]">Meet dog lovers, discover local events, and build a support system for every walk, vet visit, and wag.</p>
         </article>
       </section>
+
+      <footer className="mt-16 border-t border-[#EFE6CF] bg-white py-12">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="grid gap-8 md:grid-cols-3">
+            <div>
+              <Link href="/" className="inline-block font-sans text-lg font-bold tracking-tight text-ink">
+                <span aria-hidden="true">🐾 </span>
+                Paw<span className="text-amber">Connect</span>
+              </Link>
+              <p className="mt-2 text-sm text-[#5A5542]">India&apos;s #1 dog community platform</p>
+            </div>
+            <div>
+              <h3 className="font-fraunces font-bold text-[#1A1A0E]">Quick Links</h3>
+              <ul className="mt-3 space-y-2 text-sm">
+                <li><Link href="/search" className="text-[#5A5542] hover:text-amber">Services</Link></li>
+                <li><Link href="/community" className="text-[#5A5542] hover:text-amber">Community</Link></li>
+                <li><Link href="/contact" className="text-[#5A5542] hover:text-amber">Contact Us</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-fraunces font-bold text-[#1A1A0E]">Get Started</h3>
+              <div className="mt-3 flex gap-2">
+                <Link
+                  href="/signup"
+                  className="rounded-lg bg-amber px-4 py-2 text-sm font-semibold text-white hover:brightness-95"
+                >
+                  Join Now
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 border-t border-[#EFE6CF] pt-6 text-center text-sm text-[#5A5542]">
+            <p>&copy; 2024 PawConnect. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Fraunces, Geist_Mono } from "next/font/google";
 
-import GlobalHomeLink from "@/app/components/global-home-link";
+import { Header } from "@/app/components/Header";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fraunces.variable} ${dmSans.variable} ${geistMono.variable}`}>
       <body className="antialiased">
-        <GlobalHomeLink />
+        <Header />
         {children}
       </body>
     </html>
