@@ -1,7 +1,7 @@
 "use server";
 
+import AWS from "aws-sdk";
 import { createClient } from "@/lib/supabase/server";
-import nodemailer from "nodemailer";
 
 export interface ContactFormData {
   name: string;
@@ -32,7 +32,15 @@ export async function submitContactForm(data: ContactFormData) {
     }
 
     // Send email notification (always attempt, independent of DB)
-    await sendContactEmail(data);
+    const mailResult = await sendContactEmail(data);
+
+    if (!mailResult.success) {
+      return {
+        success: false,
+        error:
+          "We saved your message, but email delivery failed. Please check SES identity/permissions and try again.",
+      };
+    }
 
     return {
       success: true,
@@ -56,50 +64,74 @@ async function sendContactEmail(data: ContactFormData) {
 
   if (!recipientEmail) {
     console.warn("CONTACT_FORM_EMAIL not configured");
-    return;
-  }
-
-  // Check if AWS credentials are available
-  if (!awsAccessKey || !awsSecretKey) {
-    console.warn(
-      "AWS credentials not configured. Email will not be sent. Configure AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY."
-    );
-    return;
+    return { success: false };
   }
 
   try {
-    // Create Nodemailer transporter with AWS SES
-    const transporter = nodemailer.createTransport({
-      host: `email.${awsRegion}.amazonaws.com`,
-      port: 587,
-      secure: false,
-      auth: {
-        user: awsAccessKey,
-        pass: awsSecretKey,
-      },
-    });
+    // In Amplify, IAM role credentials are injected automatically.
+    // For local dev, explicit keys from .env.local can be used.
+    const sesConfig: AWS.SES.ClientConfiguration = { region: awsRegion };
+    if (awsAccessKey && awsSecretKey) {
+      sesConfig.credentials = {
+        accessKeyId: awsAccessKey,
+        secretAccessKey: awsSecretKey,
+      };
+    }
 
-    // Send email
-    await transporter.sendMail({
-      from: fromEmail,
-      to: recipientEmail,
-      subject: `New Contact Form Submission: ${data.subject}`,
-      html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${escapeHtml(data.name)}</p>
-        <p><strong>Email:</strong> ${escapeHtml(data.email)}</p>
-        <p><strong>Subject:</strong> ${escapeHtml(data.subject)}</p>
-        <p><strong>Message:</strong></p>
-        <p>${escapeHtml(data.message).replace(/\n/g, "<br>")}</p>
-        <hr>
-        <p><small>Submitted at: ${new Date().toISOString()}</small></p>
-      `,
-      replyTo: data.email,
-    });
+    const ses = new AWS.SES(sesConfig);
+
+    const htmlBody = `
+      <h2>New Contact Form Submission</h2>
+      <p><strong>Name:</strong> ${escapeHtml(data.name)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(data.email)}</p>
+      <p><strong>Subject:</strong> ${escapeHtml(data.subject)}</p>
+      <p><strong>Message:</strong></p>
+      <p>${escapeHtml(data.message).replace(/\n/g, "<br>")}</p>
+      <hr>
+      <p><small>Submitted at: ${new Date().toISOString()}</small></p>
+    `;
+
+    const textBody = [
+      "New Contact Form Submission",
+      `Name: ${data.name}`,
+      `Email: ${data.email}`,
+      `Subject: ${data.subject}`,
+      "Message:",
+      data.message,
+      `Submitted at: ${new Date().toISOString()}`,
+    ].join("\n");
+
+    await ses
+      .sendEmail({
+        Source: fromEmail!,
+        Destination: {
+          ToAddresses: [recipientEmail],
+        },
+        Message: {
+          Subject: {
+            Data: `New Contact Form Submission: ${data.subject}`,
+            Charset: "UTF-8",
+          },
+          Body: {
+            Html: {
+              Data: htmlBody,
+              Charset: "UTF-8",
+            },
+            Text: {
+              Data: textBody,
+              Charset: "UTF-8",
+            },
+          },
+        },
+        ReplyToAddresses: [data.email],
+      })
+      .promise();
 
     console.log(`Contact form email sent to ${recipientEmail} from ${fromEmail}`);
+    return { success: true };
   } catch (error) {
     console.error("Error sending contact email via AWS SES:", error);
+    return { success: false };
   }
 }
 

@@ -35,6 +35,22 @@ CREATE TABLE contact_messages (
   status TEXT DEFAULT 'new'
 );
 
+-- Security hardening (required)
+ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE contact_messages FORCE ROW LEVEL SECURITY;
+
+-- Allow form submissions, but block public reads/updates/deletes
+CREATE POLICY "Public can submit contact messages"
+   ON contact_messages
+   FOR INSERT
+   TO anon, authenticated
+   WITH CHECK (
+      char_length(coalesce(name, '')) > 0
+      AND char_length(coalesce(email, '')) > 0
+      AND char_length(coalesce(subject, '')) > 0
+      AND char_length(coalesce(message, '')) > 0
+   );
+
 -- Create index for faster queries
 CREATE INDEX idx_contact_messages_created_at ON contact_messages(created_at DESC);
 CREATE INDEX idx_contact_messages_status ON contact_messages(status);

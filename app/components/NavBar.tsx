@@ -47,6 +47,7 @@ function getNavItems(isLoggedIn: boolean, userRole: UserRole): NavItem[] {
       { href: "/search", label: "Services" },
       { href: "/breeds", label: "Breeds" },
       { href: "/community", label: "Community" },
+      { href: "/contact", label: "Contact" },
     ];
   }
 
@@ -58,6 +59,7 @@ function getNavItems(isLoggedIn: boolean, userRole: UserRole): NavItem[] {
       { href: "/dashboard/pet-owner/bookings", label: "Bookings" },
       { href: "/breeds", label: "Breeds" },
       { href: "/community", label: "Community" },
+      { href: "/contact", label: "Contact" },
     ];
   }
 
@@ -68,6 +70,7 @@ function getNavItems(isLoggedIn: boolean, userRole: UserRole): NavItem[] {
       { href: "/dashboard/service-provider/bookings", label: "Bookings" },
       { href: "/breeds", label: "Breeds" },
       { href: "/community", label: "Community" },
+      { href: "/contact", label: "Contact" },
     ];
   }
 
@@ -75,6 +78,7 @@ function getNavItems(isLoggedIn: boolean, userRole: UserRole): NavItem[] {
     { href: "/dashboard", label: "Home" },
     { href: "/breeds", label: "Breeds" },
     { href: "/community", label: "Community" },
+    { href: "/contact", label: "Contact" },
   ];
 }
 
@@ -185,8 +189,9 @@ export function NavBar({
   };
 
   return (
-    <header className="sticky top-0 z-50 h-[62px] border-b border-[#F0E4C5] bg-white/95 backdrop-blur">
-      <nav className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4">
+    <>
+      <header className="sticky top-0 z-50 h-[62px] border-b border-[#F0E4C5] bg-white/95 backdrop-blur">
+        <nav className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4">
         <Link href="/" className="font-sans text-xl font-bold tracking-tight text-ink">
           <span aria-hidden="true">🐾 </span>
           Paw<span className="text-amber">Connect</span>
@@ -272,30 +277,31 @@ export function NavBar({
           )}
         </div>
 
-        <div className="flex items-center gap-2 md:hidden">
-          {isLoggedIn ? (
-            <Link
-              href={notificationsHref}
-              className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-lg transition hover:bg-slate-50"
-              aria-label="Notifications"
-            >
-              <span aria-hidden="true">🔔</span>
-              {unreadCount > 0 ? (
-                <span className="absolute right-1 top-1 inline-flex h-2.5 w-2.5 rounded-full bg-red-500" />
-              ) : null}
-            </Link>
-          ) : null}
+          <div className="flex items-center gap-2 md:hidden">
+            {isLoggedIn ? (
+              <Link
+                href={notificationsHref}
+                className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-lg transition hover:bg-slate-50"
+                aria-label="Notifications"
+              >
+                <span aria-hidden="true">🔔</span>
+                {unreadCount > 0 ? (
+                  <span className="absolute right-1 top-1 inline-flex h-2.5 w-2.5 rounded-full bg-red-500" />
+                ) : null}
+              </Link>
+            ) : null}
 
-          <button
-            type="button"
-            onClick={() => setMenuOpen(true)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-xl"
-            aria-label="Open menu"
-          >
-            ☰
-          </button>
-        </div>
-      </nav>
+            <button
+              type="button"
+              onClick={() => setMenuOpen(true)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-xl"
+              aria-label="Open menu"
+            >
+              ☰
+            </button>
+          </div>
+        </nav>
+      </header>
 
       {menuOpen ? (
         <div className="fixed inset-0 z-[120] md:hidden">
@@ -408,6 +414,6 @@ export function NavBar({
           </div>
         </div>
       ) : null}
-    </header>
+    </>
   );
 }
