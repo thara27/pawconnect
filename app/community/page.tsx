@@ -1,4 +1,3 @@
-import SignupNudge from "@/app/components/ui/SignupNudge";
 import AuthPromptButton from "@/app/components/ui/AuthPromptButton";
 import { createClient } from "@/lib/supabase/server";
 
@@ -54,15 +53,10 @@ export default async function CommunityPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FDF8F3] px-4 py-10">
-      <div className="mx-auto w-full max-w-4xl">
-        <SignupNudge
-          message="Join the PawConnect community to ask questions, share stories, and support emergency blood requests."
-          ctaText="Join Free"
-        />
-
-        <div className="mt-6 flex items-center justify-between">
-          <h1 className="text-3xl text-slate-900">Community Feed</h1>
+    <main className="page-wrapper px-4 py-10">
+        <div className="mx-auto w-full max-w-4xl">
+        <div className="section-header mt-6">
+          <h1 className="heading-md">Community Feed</h1>
           <AuthPromptButton
             triggerText="Post"
             promptText="Login or sign up to publish your post"
@@ -71,30 +65,27 @@ export default async function CommunityPage() {
 
         <div className="mt-6 space-y-4">
           {posts.map((post) => (
-            <article key={post.id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <article key={post.id} className="card">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <h2 className="text-xl text-slate-900">{post.title}</h2>
-                <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
+                <h2 className="heading-sm">{post.title}</h2>
+                <span className="badge badge-neutral">
                   {post.post_type ?? "post"}
                 </span>
               </div>
 
-              <p className="mt-2 text-sm text-slate-700">{post.content.slice(0, 180)}</p>
+              <p className="mt-2 text-sm text-muted">{post.content.slice(0, 180)}</p>
 
               {post.tags && post.tags.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2">
                   {post.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full bg-orange-50 px-2 py-0.5 text-xs font-medium text-[#E8602C]"
-                    >
+                    <span key={tag} className="badge badge-brand">
                       #{tag}
                     </span>
                   ))}
                 </div>
               )}
 
-              <div className="mt-4 flex items-center justify-between text-xs text-slate-500">
+              <div className="mt-4 flex items-center justify-between text-xs text-muted">
                 <p>
                   by {authorFirstName(post.author_id)} · {new Date(post.created_at).toLocaleDateString("en-IN")}
                 </p>
@@ -107,7 +98,7 @@ export default async function CommunityPage() {
             </article>
           ))}
         </div>
-      </div>
+        </div>
     </main>
   );
 }

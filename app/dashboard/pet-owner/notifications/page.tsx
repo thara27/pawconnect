@@ -1,8 +1,8 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 export default function PetOwnerNotificationsPage() {
   return (
-    <main className="min-h-screen bg-bg px-4 py-6">
+    <main className="bg-bg px-4 py-6">
       <section className="mx-auto w-full max-w-4xl rounded-2xl border border-border bg-white p-6">
         <h1 className="text-2xl font-bold text-ink">Notifications</h1>
         <p className="mt-2 text-sm text-muted">

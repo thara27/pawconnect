@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
@@ -36,7 +36,7 @@ function SubmitButton({ mode }: { mode: PetFormProps["mode"] }) {
     <button
       type="submit"
       disabled={pending}
-      className="w-full rounded-lg bg-slate-900 px-4 py-2.5 font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+      className="w-full btn btn-primary sm:w-auto disabled:cursor-not-allowed disabled:opacity-60"
     >
       {pending ? (mode === "create" ? "Saving..." : "Updating...") : mode === "create" ? "Save pet profile" : "Update pet profile"}
     </button>
@@ -166,7 +166,7 @@ export function PetForm({ mode, pet }: PetFormProps) {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="sm:col-span-2">
-          <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-slate-700">
+          <label htmlFor="name" className="form-label mb-1.5">
             Name *
           </label>
           <input
@@ -176,13 +176,13 @@ export function PetForm({ mode, pet }: PetFormProps) {
             required
             maxLength={PET_FORM_LIMITS.nameMaxLength}
             defaultValue={pet?.name ?? ""}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
+            className="w-full rounded-lg border border-border px-3 py-2.5 text-ink outline-none ring-brand-light transition focus:ring"
           />
           {errors.name ? <p className="mt-1 text-sm text-red-700">{errors.name}</p> : null}
         </div>
 
         <div>
-          <label htmlFor="species" className="mb-1.5 block text-sm font-medium text-slate-700">
+          <label htmlFor="species" className="form-label mb-1.5">
             Species *
           </label>
           <select
@@ -190,7 +190,7 @@ export function PetForm({ mode, pet }: PetFormProps) {
             name="species"
             required
             defaultValue={pet?.species ?? "dog"}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
+            className="w-full rounded-lg border border-border px-3 py-2.5 text-ink outline-none ring-brand-light transition focus:ring"
           >
             {PET_SPECIES.map((speciesOption) => (
               <option key={speciesOption} value={speciesOption}>
@@ -202,7 +202,7 @@ export function PetForm({ mode, pet }: PetFormProps) {
         </div>
 
         <div>
-          <label htmlFor="breed" className="mb-1.5 block text-sm font-medium text-slate-700">
+          <label htmlFor="breed" className="form-label mb-1.5">
             Breed
           </label>
           <input
@@ -211,7 +211,7 @@ export function PetForm({ mode, pet }: PetFormProps) {
             type="text"
             maxLength={PET_FORM_LIMITS.breedMaxLength}
             defaultValue={pet?.breed ?? ""}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
+            className="w-full rounded-lg border border-border px-3 py-2.5 text-ink outline-none ring-brand-light transition focus:ring"
           />
           {errors.breed ? <p className="mt-1 text-sm text-red-700">{errors.breed}</p> : null}
         </div>
@@ -219,7 +219,7 @@ export function PetForm({ mode, pet }: PetFormProps) {
         <div>
           <label
             htmlFor="breed_size"
-            className="mb-1.5 block text-sm font-medium text-slate-700"
+            className="form-label mb-1.5"
           >
             Breed size
           </label>
@@ -227,7 +227,7 @@ export function PetForm({ mode, pet }: PetFormProps) {
             id="breed_size"
             name="breed_size"
             defaultValue={pet?.breed_size ?? ""}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
+            className="w-full rounded-lg border border-border px-3 py-2.5 text-ink outline-none ring-brand-light transition focus:ring"
           >
             <option value="">Select size</option>
             {PET_BREED_SIZES.map((breedSizeOption) => (
@@ -242,7 +242,7 @@ export function PetForm({ mode, pet }: PetFormProps) {
         </div>
 
         <div>
-          <label htmlFor="age_years" className="mb-1.5 block text-sm font-medium text-slate-700">
+          <label htmlFor="age_years" className="form-label mb-1.5">
             Age (years)
           </label>
           <input
@@ -253,13 +253,13 @@ export function PetForm({ mode, pet }: PetFormProps) {
             max={PET_FORM_LIMITS.maxAgeYears}
             step="0.1"
             defaultValue={pet?.age_years ?? ""}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
+            className="w-full rounded-lg border border-border px-3 py-2.5 text-ink outline-none ring-brand-light transition focus:ring"
           />
           {errors.age_years ? <p className="mt-1 text-sm text-red-700">{errors.age_years}</p> : null}
         </div>
 
         <div>
-          <label htmlFor="weight_kg" className="mb-1.5 block text-sm font-medium text-slate-700">
+          <label htmlFor="weight_kg" className="form-label mb-1.5">
             Weight (kg)
           </label>
           <input
@@ -270,20 +270,20 @@ export function PetForm({ mode, pet }: PetFormProps) {
             max={PET_FORM_LIMITS.maxWeightKg}
             step="0.1"
             defaultValue={pet?.weight_kg ?? ""}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
+            className="w-full rounded-lg border border-border px-3 py-2.5 text-ink outline-none ring-brand-light transition focus:ring"
           />
           {errors.weight_kg ? <p className="mt-1 text-sm text-red-700">{errors.weight_kg}</p> : null}
         </div>
 
         <div>
-          <label htmlFor="gender" className="mb-1.5 block text-sm font-medium text-slate-700">
+          <label htmlFor="gender" className="form-label mb-1.5">
             Gender
           </label>
           <select
             id="gender"
             name="gender"
             defaultValue={pet?.gender ?? "unknown"}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
+            className="w-full rounded-lg border border-border px-3 py-2.5 text-ink outline-none ring-brand-light transition focus:ring"
           >
             {PET_GENDERS.map((genderOption) => (
               <option key={genderOption} value={genderOption}>
@@ -295,7 +295,7 @@ export function PetForm({ mode, pet }: PetFormProps) {
         </div>
 
         <div>
-          <label htmlFor="blood_type" className="mb-1.5 block text-sm font-medium text-slate-700">
+          <label htmlFor="blood_type" className="form-label mb-1.5">
             Blood type
           </label>
           <input
@@ -304,13 +304,13 @@ export function PetForm({ mode, pet }: PetFormProps) {
             type="text"
             maxLength={PET_FORM_LIMITS.bloodTypeMaxLength}
             defaultValue={pet?.blood_type ?? ""}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
+            className="w-full rounded-lg border border-border px-3 py-2.5 text-ink outline-none ring-brand-light transition focus:ring"
           />
           {errors.blood_type ? <p className="mt-1 text-sm text-red-700">{errors.blood_type}</p> : null}
         </div>
 
         <div>
-          <label htmlFor="color" className="mb-1.5 block text-sm font-medium text-slate-700">
+          <label htmlFor="color" className="form-label mb-1.5">
             Color
           </label>
           <input
@@ -319,13 +319,13 @@ export function PetForm({ mode, pet }: PetFormProps) {
             type="text"
             maxLength={PET_FORM_LIMITS.colorMaxLength}
             defaultValue={pet?.color ?? ""}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
+            className="w-full rounded-lg border border-border px-3 py-2.5 text-ink outline-none ring-brand-light transition focus:ring"
           />
           {errors.color ? <p className="mt-1 text-sm text-red-700">{errors.color}</p> : null}
         </div>
 
         <div>
-          <label htmlFor="microchip_id" className="mb-1.5 block text-sm font-medium text-slate-700">
+          <label htmlFor="microchip_id" className="form-label mb-1.5">
             Microchip ID
           </label>
           <input
@@ -335,13 +335,13 @@ export function PetForm({ mode, pet }: PetFormProps) {
             maxLength={PET_FORM_LIMITS.microchipIdMaxLength}
             pattern="[A-Za-z0-9-]+"
             defaultValue={pet?.microchip_id ?? ""}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
+            className="w-full rounded-lg border border-border px-3 py-2.5 text-ink outline-none ring-brand-light transition focus:ring"
           />
           {errors.microchip_id ? <p className="mt-1 text-sm text-red-700">{errors.microchip_id}</p> : null}
         </div>
 
         <div className="sm:col-span-2">
-          <label htmlFor="medical_notes" className="mb-1.5 block text-sm font-medium text-slate-700">
+          <label htmlFor="medical_notes" className="form-label mb-1.5">
             Medical notes
           </label>
           <textarea
@@ -350,14 +350,14 @@ export function PetForm({ mode, pet }: PetFormProps) {
             rows={4}
             maxLength={PET_FORM_LIMITS.medicalNotesMaxLength}
             defaultValue={pet?.medical_notes ?? ""}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
+            className="w-full rounded-lg border border-border px-3 py-2.5 text-ink outline-none ring-brand-light transition focus:ring"
           />
           {errors.medical_notes ? <p className="mt-1 text-sm text-red-700">{errors.medical_notes}</p> : null}
         </div>
 
-        <div className="sm:col-span-2 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-          <h2 className="text-base font-semibold text-slate-900">Health &amp; Medical</h2>
-          <p className="mt-1 text-sm text-slate-600">
+        <div className="sm:col-span-2 card-flat p-4">
+          <h2 className="text-base font-semibold text-ink">Health &amp; Medical</h2>
+          <p className="mt-1 text-sm text-muted">
             Track vaccination status and deworming dates for this pet.
           </p>
 
@@ -365,7 +365,7 @@ export function PetForm({ mode, pet }: PetFormProps) {
             <div>
               <label
                 htmlFor="last_dewormed"
-                className="mb-1.5 block text-sm font-medium text-slate-700"
+                className="form-label mb-1.5"
               >
                 Last dewormed
               </label>
@@ -374,14 +374,14 @@ export function PetForm({ mode, pet }: PetFormProps) {
                 name="last_dewormed"
                 type="date"
                 defaultValue={pet?.last_dewormed ? pet.last_dewormed.slice(0, 10) : ""}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
+                className="w-full rounded-lg border border-border px-3 py-2.5 text-ink outline-none ring-brand-light transition focus:ring"
               />
             </div>
 
             <div>
               <label
                 htmlFor="next_deworming"
-                className="mb-1.5 block text-sm font-medium text-slate-700"
+                className="form-label mb-1.5"
               >
                 Next deworming
               </label>
@@ -390,39 +390,39 @@ export function PetForm({ mode, pet }: PetFormProps) {
                 name="next_deworming"
                 type="date"
                 defaultValue={pet?.next_deworming ? pet.next_deworming.slice(0, 10) : ""}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
+                className="w-full rounded-lg border border-border px-3 py-2.5 text-ink outline-none ring-brand-light transition focus:ring"
               />
               {errors.next_deworming ? (
                 <p className="mt-1 text-sm text-red-700">{errors.next_deworming}</p>
               ) : null}
             </div>
 
-            <label className="flex items-center gap-2 text-sm text-slate-700">
+            <label className="flex items-center gap-2 text-sm text-ink">
               <input
                 type="checkbox"
                 name="is_vaccinated_rabies"
                 defaultChecked={pet?.is_vaccinated_rabies ?? false}
-                className="h-4 w-4 rounded border-slate-300"
+                className="rounded border-border" style={{ width: 'auto', minHeight: 'auto' }}
               />
               Rabies vaccinated
             </label>
 
-            <label className="flex items-center gap-2 text-sm text-slate-700">
+            <label className="flex items-center gap-2 text-sm text-ink">
               <input
                 type="checkbox"
                 name="is_vaccinated_dhpp"
                 defaultChecked={pet?.is_vaccinated_dhpp ?? false}
-                className="h-4 w-4 rounded border-slate-300"
+                className="rounded border-border" style={{ width: 'auto', minHeight: 'auto' }}
               />
               DHPP vaccinated
             </label>
 
-            <label className="sm:col-span-2 flex items-center gap-2 text-sm text-slate-700">
+            <label className="sm:col-span-2 flex items-center gap-2 text-sm text-ink">
               <input
                 type="checkbox"
                 name="neutered"
                 defaultChecked={pet?.neutered ?? false}
-                className="h-4 w-4 rounded border-slate-300"
+                className="rounded border-border" style={{ width: 'auto', minHeight: 'auto' }}
               />
               Neutered
             </label>
@@ -430,7 +430,7 @@ export function PetForm({ mode, pet }: PetFormProps) {
         </div>
 
         <div className="sm:col-span-2">
-          <label htmlFor="photo" className="mb-1.5 block text-sm font-medium text-slate-700">
+          <label htmlFor="photo" className="form-label mb-1.5">
             {mode === "create" ? "Photo" : "Replace photo"}
           </label>
           <input
@@ -466,36 +466,36 @@ export function PetForm({ mode, pet }: PetFormProps) {
                 return nextErrors;
               });
             }}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 file:mr-3 file:rounded-md file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:text-sm file:font-medium"
+            className="w-full rounded-lg border border-border px-3 py-2 text-sm text-ink file:mr-3 file:rounded-md file:border-0 file:bg-bg file:px-3 file:py-2 file:text-sm file:font-medium"
           />
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-muted">
             JPG, PNG, or WebP up to {PET_PHOTO_MAX_SIZE_LABEL}.
           </p>
           {pet?.photo_url ? (
-            <p className="mt-1 text-xs text-slate-500">Leave blank to keep the current photo.</p>
+            <p className="mt-1 text-xs text-muted">Leave blank to keep the current photo.</p>
           ) : null}
           {errors.photo ? <p className="mt-1 text-sm text-red-700">{errors.photo}</p> : null}
         </div>
 
-        <label className="sm:col-span-2 flex items-center gap-2 text-sm text-slate-700">
+        <label className="sm:col-span-2 flex items-center gap-2 text-sm text-ink">
           <input
             type="checkbox"
             name="is_vaccinated"
             defaultChecked={pet?.is_vaccinated ?? false}
-            className="h-4 w-4 rounded border-slate-300"
+            className="rounded border-border" style={{ width: 'auto', minHeight: 'auto' }}
           />
           Is vaccinated
         </label>
       </div>
 
       {mode === "edit" && pet?.photo_url ? (
-        <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
+        <div className="rounded-lg border border-border bg-bg p-3 text-sm text-muted">
           Current photo is already saved for this pet.
         </div>
       ) : null}
 
       {state.error ? (
-        <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="alert alert-error">
           {state.error}
         </p>
       ) : null}
@@ -504,3 +504,4 @@ export function PetForm({ mode, pet }: PetFormProps) {
     </form>
   );
 }
+

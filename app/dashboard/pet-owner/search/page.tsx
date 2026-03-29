@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Suspense, useState, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -13,32 +13,32 @@ import ProviderCard from "@/app/components/providers/ProviderCard";
 // ---------------------------------------------------------------------------
 function SkeletonCard() {
   return (
-    <div className="animate-pulse rounded-2xl border border-slate-200 bg-white p-5">
+    <div className="card animate-pulse p-5">
       <div className="flex items-start gap-4">
-        <div className="h-14 w-14 flex-shrink-0 rounded-full bg-slate-200" />
+        <div className="h-14 w-14 flex-shrink-0 rounded-full bg-border" />
         <div className="flex-1 space-y-2 pt-1">
-          <div className="h-4 w-3/4 rounded bg-slate-200" />
-          <div className="h-3 w-1/3 rounded bg-slate-200" />
+          <div className="h-4 w-3/4 rounded bg-border" />
+          <div className="h-3 w-1/3 rounded bg-border" />
         </div>
       </div>
-      <div className="mt-3 h-3 w-1/3 rounded bg-slate-200" />
-      <div className="mt-2 h-3 w-1/2 rounded bg-slate-200" />
+      <div className="mt-3 h-3 w-1/3 rounded bg-border" />
+      <div className="mt-2 h-3 w-1/2 rounded bg-border" />
       <div className="mt-4 flex justify-between">
-        <div className="h-6 w-28 rounded-full bg-slate-200" />
-        <div className="h-8 w-24 rounded-lg bg-slate-200" />
+        <div className="h-6 w-28 rounded-full bg-border" />
+        <div className="h-8 w-24 rounded-lg bg-border" />
       </div>
     </div>
   );
 }
 
 // ---------------------------------------------------------------------------
-// Main search content (uses useSearchParams — must be inside Suspense)
+// Main search content (uses useSearchParams â€” must be inside Suspense)
 // ---------------------------------------------------------------------------
 function SearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Controlled filter inputs — initialised from URL
+  // Controlled filter inputs â€” initialised from URL
   const [city, setCity] = useState(searchParams.get("city") ?? "");
   const [serviceType, setServiceType] = useState(searchParams.get("service") ?? "");
   const [isAvailable, setIsAvailable] = useState(searchParams.get("available") === "true");
@@ -98,13 +98,13 @@ function SearchContent() {
       : `${results.length} provider${results.length !== 1 ? "s" : ""} available`;
 
   return (
-    <main className="min-h-screen bg-slate-50">
+    <main className="bg-bg">
       {/* ------------------------------------------------------------------ */}
       {/* Filters bar                                                          */}
       {/* ------------------------------------------------------------------ */}
-      <div className="border-b border-slate-200 bg-white px-4 py-6 shadow-sm">
+      <div className="border-b border-border bg-white px-4 py-6">
         <div className="mx-auto max-w-6xl">
-          <h1 className="mb-5 text-2xl font-semibold text-slate-900">Find pet services</h1>
+          <h1 className="mb-5 text-2xl font-semibold text-ink">Find pet services</h1>
           <form onSubmit={handleSearch} className="flex flex-wrap gap-3">
             {/* City */}
             <input
@@ -112,14 +112,14 @@ function SearchContent() {
               placeholder="Search by city e.g. Bangalore"
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              className="min-w-[200px] flex-1 rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500"
+              className="min-w-[200px] flex-1 rounded-lg border border-border px-4 py-2.5 text-sm text-ink placeholder:text-muted focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
             />
 
             {/* Service type */}
             <select
               value={serviceType}
               onChange={(e) => setServiceType(e.target.value)}
-              className="rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-900 focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500"
+              className="rounded-lg border border-border px-4 py-2.5 text-sm text-ink focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
             >
               <option value="">All Services</option>
               {SERVICE_TYPES.map((s) => (
@@ -133,7 +133,7 @@ function SearchContent() {
             <select
               value={minRating}
               onChange={(e) => setMinRating(e.target.value)}
-              className="rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-900 focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500"
+              className="rounded-lg border border-border px-4 py-2.5 text-sm text-ink focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
             >
               <option value="">Any Rating</option>
               <option value="3">3+ stars</option>
@@ -142,12 +142,12 @@ function SearchContent() {
             </select>
 
             {/* Available now toggle */}
-            <label className="flex cursor-pointer select-none items-center gap-2 rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-700 transition hover:border-orange-400">
+            <label className="flex cursor-pointer select-none items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm text-ink transition hover:border-brand">
               <input
                 type="checkbox"
                 checked={isAvailable}
                 onChange={(e) => setIsAvailable(e.target.checked)}
-                className="h-4 w-4 rounded border-slate-300 text-orange-600 focus:ring-orange-500"
+                className="rounded border-border" style={{ width: 'auto', minHeight: 'auto' }}
               />
               Available now
             </label>
@@ -155,7 +155,7 @@ function SearchContent() {
             {/* Search button */}
             <button
               type="submit"
-              className="rounded-lg bg-orange-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-700"
+              className="btn btn-primary"
             >
               Search
             </button>
@@ -168,13 +168,13 @@ function SearchContent() {
       {/* ------------------------------------------------------------------ */}
       <div className="mx-auto max-w-6xl px-4 py-8">
         {fetchError && (
-          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <div className="mb-6 alert alert-error">
             {fetchError}
           </div>
         )}
 
         {!isLoading && hasLoaded && (
-          <p className="mb-5 text-sm text-slate-500">{resultLabel}</p>
+          <p className="mb-5 text-sm text-muted">{resultLabel}</p>
         )}
 
         {isLoading ? (
@@ -194,9 +194,9 @@ function SearchContent() {
         ) : hasLoaded ? (
           // Empty state
           <div className="flex flex-col items-center py-24 text-center">
-            <div className="mb-4 text-6xl" aria-hidden="true">🐾</div>
-            <h2 className="text-lg font-semibold text-slate-900">No providers found</h2>
-            <p className="mt-2 max-w-xs text-sm text-slate-500">
+            <div className="mb-4 text-6xl" aria-hidden="true">ðŸ¾</div>
+            <h2 className="text-lg font-semibold text-ink">No providers found</h2>
+            <p className="mt-2 max-w-xs text-sm text-muted">
               Try a different city or service type, or remove some filters.
             </p>
           </div>
@@ -207,14 +207,14 @@ function SearchContent() {
 }
 
 // ---------------------------------------------------------------------------
-// Page wrapper — Suspense is required around useSearchParams
+// Page wrapper â€” Suspense is required around useSearchParams
 // ---------------------------------------------------------------------------
 export default function SearchPage() {
   return (
     <Suspense
       fallback={
-        <main className="flex min-h-screen items-center justify-center bg-slate-50">
-          <p className="text-slate-500">Loading…</p>
+        <main className="flex min-h-screen items-center justify-center bg-bg">
+          <p className="text-muted">Loadingâ€¦</p>
         </main>
       }
     >
@@ -222,3 +222,4 @@ export default function SearchPage() {
     </Suspense>
   );
 }
+

@@ -14,6 +14,10 @@ export default async function DashboardRedirectingPage() {
 
   const userType = user.user_metadata?.user_type;
 
+  if (!userType) {
+    redirect("/onboarding");
+  }
+
   if (userType === "service_provider") {
     redirect("/dashboard/service-provider");
   }

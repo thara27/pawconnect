@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { DM_Sans, Fraunces, Geist_Mono } from "next/font/google";
+import { DM_Sans, Fraunces } from "next/font/google";
 
+import Footer from "@/app/components/Footer";
 import { Header } from "@/app/components/Header";
 import "./globals.css";
 
@@ -8,18 +9,15 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-dm-sans",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["400", "700", "900"],
+  weight: ["400", "600", "700", "900"],
   style: ["normal", "italic"],
   variable: "--font-fraunces",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -33,10 +31,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${dmSans.variable} ${geistMono.variable}`}>
-      <body className="antialiased">
+    <html lang="en" className={`${fraunces.variable} ${dmSans.variable}`}>
+      <body className="flex min-h-screen flex-col antialiased">
         <Header />
-        {children}
+        <div className="flex flex-1 flex-col">
+          {children}
+        </div>
+        <Footer />
       </body>
     </html>
   );

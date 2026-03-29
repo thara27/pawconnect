@@ -16,7 +16,7 @@ function StarRating({ rating, large = false }: { rating: number; large?: boolean
       {Array.from({ length: 5 }, (_, index) => (
         <svg
           key={index}
-          className={`${size} ${index < filled ? "text-amber-400" : "text-slate-200"}`}
+          className={`${size} ${index < filled ? "text-brand" : "text-border"}`}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -29,10 +29,10 @@ function StarRating({ rating, large = false }: { rating: number; large?: boolean
 
 function ReviewCard({ review }: { review: ProviderReview }) {
   return (
-    <article className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+    <article className="card">
       <div className="flex items-center justify-between">
         <StarRating rating={review.rating} />
-        <time className="text-xs text-slate-500" dateTime={review.created_at}>
+        <time className="text-xs text-muted" dateTime={review.created_at}>
           {new Date(review.created_at).toLocaleDateString("en-IN", {
             year: "numeric",
             month: "short",
@@ -40,7 +40,7 @@ function ReviewCard({ review }: { review: ProviderReview }) {
           })}
         </time>
       </div>
-      {review.comment && <p className="mt-2 text-sm text-slate-700">{review.comment}</p>}
+      {review.comment && <p className="mt-2 text-sm text-muted">{review.comment}</p>}
     </article>
   );
 }
@@ -67,16 +67,16 @@ export default async function PublicProviderDetailPage({
   const availabilityMap = new Map(provider.availability.map((slot) => [slot.day_of_week, slot]));
 
   return (
-    <main className="min-h-screen bg-[#FDF8F3] px-4 py-8 pb-24 md:pb-10">
+    <main className="bg-bg px-4 py-8 pb-24 md:pb-10">
       <div className="mx-auto w-full max-w-3xl space-y-6">
-        <Link href="/search" className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900">
+        <Link href="/search" className="inline-flex items-center gap-1 text-sm text-muted hover:text-ink">
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
           Back to search
         </Link>
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section className="card">
           <div className="flex flex-col gap-5 sm:flex-row">
             <div className="relative h-20 w-20 flex-shrink-0">
               {provider.avatar_url ? (
@@ -88,7 +88,7 @@ export default async function PublicProviderDetailPage({
                   sizes="80px"
                 />
               ) : (
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-orange-100 text-2xl font-bold text-[#E8602C]">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-brand-light text-2xl font-bold text-brand">
                   {provider.business_name
                     .split(/\s+/)
                     .slice(0, 2)
@@ -100,15 +100,15 @@ export default async function PublicProviderDetailPage({
 
             <div className="flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-2xl text-slate-900">{provider.business_name}</h1>
-                <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-[#E8602C]">
+                <h1 className="heading-sm">{provider.business_name}</h1>
+                <span className="badge badge-brand">
                   {serviceLabel}
                 </span>
                 <span
-                  className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                  className={`${
                     provider.is_available
-                      ? "bg-emerald-100 text-emerald-700"
-                      : "bg-slate-100 text-slate-500"
+                      ? "badge badge-success"
+                      : "badge badge-neutral"
                   }`}
                 >
                   {provider.is_available ? "Available" : "Unavailable"}
@@ -117,22 +117,22 @@ export default async function PublicProviderDetailPage({
 
               <div className="mt-2 flex items-center gap-2">
                 <StarRating rating={provider.avg_rating} large />
-                <span className="text-sm text-slate-600">
+                <span className="text-sm text-muted">
                   {provider.avg_rating > 0 ? provider.avg_rating.toFixed(1) : "No ratings yet"}
                   {provider.review_count > 0 && (
-                    <span className="ml-1 text-slate-500">({provider.review_count})</span>
+                    <span className="ml-1 text-muted">({provider.review_count})</span>
                   )}
                 </span>
               </div>
 
-              <p className="mt-2 text-sm text-slate-600">{provider.city}, {provider.state}</p>
-              <p className="text-sm text-slate-600">{provider.phone}</p>
+              <p className="mt-2 text-sm text-muted">{provider.city}, {provider.state}</p>
+              <p className="text-sm text-muted">{provider.phone}</p>
               {provider.website && (
                 <a
                   href={provider.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-1 inline-block text-sm text-[#E8602C] hover:underline"
+                  className="mt-1 inline-block text-sm text-brand hover:underline"
                 >
                   {provider.website}
                 </a>
@@ -146,32 +146,32 @@ export default async function PublicProviderDetailPage({
           ctaText="Sign up to book"
         />
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-xl text-slate-900">Pricing</h2>
-          <p className="mt-2 text-sm text-slate-700">
+        <section className="card">
+          <h2 className="heading-sm">Pricing</h2>
+          <p className="mt-2 text-sm text-muted">
             {provider.price_from !== null && provider.price_to !== null
               ? `₹${provider.price_from.toLocaleString("en-IN")} – ₹${provider.price_to.toLocaleString("en-IN")}`
               : "Pricing not listed"}
             {provider.price_unit && (
-              <span className="text-slate-500"> / {priceUnitLabel.replace(/_/g, " ")}</span>
+              <span className="text-muted"> / {priceUnitLabel.replace(/_/g, " ")}</span>
             )}
           </p>
           {provider.years_experience !== null && (
-            <p className="mt-1 text-sm text-slate-700">Experience: {provider.years_experience} years</p>
+            <p className="mt-1 text-sm text-muted">Experience: {provider.years_experience} years</p>
           )}
           {provider.license_number && (
-            <p className="mt-1 text-sm text-slate-700">License: {provider.license_number}</p>
+            <p className="mt-1 text-sm text-muted">License: {provider.license_number}</p>
           )}
         </section>
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-xl text-slate-900">Weekly Schedule</h2>
-          <table className="mt-3 w-full text-sm">
-            <tbody className="divide-y divide-slate-100">
+        <section className="card">
+          <h2 className="heading-sm">Weekly Schedule</h2>
+          <table className="mt-3 w-full text-sm text-ink">
+            <tbody className="divide-y divide-border">
               {DAYS_OF_WEEK.map((day, dayIndex) => {
                 const slot = availabilityMap.get(dayIndex);
                 return (
-                  <tr key={day} className={slot ? "text-slate-800" : "text-slate-400"}>
+                  <tr key={day} className={slot ? "text-ink" : "text-muted"}>
                     <td className="py-2 font-medium">{day}</td>
                     <td className="py-2 text-right">
                       {slot ? `${slot.open_time.slice(0, 5)} - ${slot.close_time.slice(0, 5)}` : "Closed"}
@@ -184,14 +184,14 @@ export default async function PublicProviderDetailPage({
         </section>
 
         {provider.description && (
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-xl text-slate-900">About</h2>
-            <p className="mt-2 text-sm leading-relaxed text-slate-700">{provider.description}</p>
+          <section className="card">
+            <h2 className="heading-sm">About</h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted">{provider.description}</p>
           </section>
         )}
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-xl text-slate-900">Reviews</h2>
+        <section className="card">
+          <h2 className="heading-sm">Reviews</h2>
           {reviews.length > 0 ? (
             <div className="mt-4 space-y-3">
               {reviews.map((review) => (
@@ -199,15 +199,15 @@ export default async function PublicProviderDetailPage({
               ))}
             </div>
           ) : (
-            <p className="mt-2 text-sm text-slate-500">No reviews yet.</p>
+            <p className="mt-2 text-sm text-muted">No reviews yet.</p>
           )}
         </section>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 border-t border-slate-200 bg-white px-4 py-3 md:hidden">
+      <div className="fixed bottom-0 left-0 right-0 border-t border-border bg-white px-4 py-3 md:hidden">
         <Link
           href="/signup"
-          className="block rounded-xl bg-[#E8602C] py-3 text-center text-sm font-semibold text-white transition hover:bg-[#cf5222]"
+          className="block btn btn-primary btn-full"
         >
           Sign up to book
         </Link>

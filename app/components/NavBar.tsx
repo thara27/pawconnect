@@ -19,8 +19,8 @@ function NavLink({ href, label, active }: { href: string; label: string; active:
       href={href}
       className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
         active
-          ? "bg-amber-light text-amber"
-          : "text-[#4A4637] hover:bg-amber-light hover:text-amber"
+          ? "bg-brand-light text-brand"
+          : "text-muted hover:bg-brand-light hover:text-brand"
       }`}
     >
       {label}
@@ -190,11 +190,11 @@ export function NavBar({
 
   return (
     <>
-      <header className="sticky top-0 z-50 h-[62px] border-b border-[#F0E4C5] bg-white/95 backdrop-blur">
+      <header className="sticky top-0 z-[100] h-[62px] bg-white shadow-sm">
         <nav className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4">
-        <Link href="/" className="font-sans text-xl font-bold tracking-tight text-ink">
+        <Link href="/" className="font-fraunces text-2xl font-black text-brand">
           <span aria-hidden="true">🐾 </span>
-          Paw<span className="text-amber">Connect</span>
+          PawConnect
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">
@@ -213,7 +213,7 @@ export function NavBar({
             <>
               <Link
                 href={notificationsHref}
-                className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-lg transition hover:bg-slate-50"
+                className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-lg transition hover:bg-bg"
                 aria-label="Notifications"
               >
                 <span aria-hidden="true">🔔</span>
@@ -226,24 +226,25 @@ export function NavBar({
                 <button
                   type="button"
                   onClick={() => setProfileOpen((value) => !value)}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-amber-light font-semibold text-amber"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-brand-light font-semibold text-brand"
                   aria-label="Open profile menu"
                 >
                   A
                 </button>
 
+
                 {profileOpen ? (
-                  <div className="absolute right-0 mt-2 w-44 rounded-xl border border-slate-200 bg-white p-1 shadow-lg">
+                  <div className="absolute right-0 mt-2 w-44 rounded-xl border border-border bg-white p-1 shadow-lg">
                     <Link
                       href={profileHref}
-                      className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                      className="block rounded-lg px-3 py-2 text-sm text-ink hover:bg-bg"
                       onClick={() => setProfileOpen(false)}
                     >
                       My Profile
                     </Link>
                     <Link
                       href={settingsHref}
-                      className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                      className="block rounded-lg px-3 py-2 text-sm text-ink hover:bg-bg"
                       onClick={() => setProfileOpen(false)}
                     >
                       Settings
@@ -261,16 +262,10 @@ export function NavBar({
             </>
           ) : (
             <>
-              <Link
-                href="/login"
-                className="text-sm font-semibold text-[#3D3A2E] transition hover:text-amber"
-              >
+              <Link href="/login" className="btn btn-ghost btn-sm">
                 Log In
               </Link>
-              <Link
-                href="/signup"
-                className="rounded-lg bg-[linear-gradient(180deg,#F6C14D_0%,#E8920A_100%)] px-4 py-2 text-sm font-semibold text-white shadow-[0_4px_14px_rgba(232,146,10,0.32)] transition hover:brightness-105"
-              >
+              <Link href="/signup" className="btn btn-primary btn-sm">
                 Sign Up
               </Link>
             </>
@@ -281,7 +276,7 @@ export function NavBar({
             {isLoggedIn ? (
               <Link
                 href={notificationsHref}
-                className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-lg transition hover:bg-slate-50"
+                className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-lg transition hover:bg-bg"
                 aria-label="Notifications"
               >
                 <span aria-hidden="true">🔔</span>
@@ -294,7 +289,7 @@ export function NavBar({
             <button
               type="button"
               onClick={() => setMenuOpen(true)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-xl"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border text-xl"
               aria-label="Open menu"
             >
               ☰
@@ -312,20 +307,20 @@ export function NavBar({
             aria-label="Close menu backdrop"
           />
 
-          <div className="absolute inset-0 flex flex-col bg-white text-slate-900 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 px-4 py-4">
+          <div className="absolute inset-0 flex flex-col bg-white text-ink shadow-2xl">
+            <div className="flex items-center justify-between border-b border-border px-4 py-4">
             <Link
               href="/"
-              className="font-sans text-xl font-bold tracking-tight text-ink"
+              className="font-fraunces text-2xl font-black text-brand"
               onClick={() => setMenuOpen(false)}
             >
               <span aria-hidden="true">🐾 </span>
-              Paw<span className="text-amber">Connect</span>
+              PawConnect
             </Link>
             <button
               type="button"
               onClick={() => setMenuOpen(false)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-xl"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border text-xl"
               aria-label="Close menu"
             >
               ×
@@ -343,8 +338,8 @@ export function NavBar({
                     onClick={() => setMenuOpen(false)}
                     className={`flex min-h-12 items-center rounded-xl px-4 text-base font-semibold transition ${
                       active
-                        ? "bg-amber-light text-amber"
-                        : "text-[#4A4637] hover:bg-amber-light hover:text-amber"
+                        ? "bg-brand-light text-brand"
+                        : "text-muted hover:bg-brand-light hover:text-brand"
                     }`}
                   >
                     {label}
@@ -357,7 +352,7 @@ export function NavBar({
                   <Link
                     href={notificationsHref}
                     onClick={() => setMenuOpen(false)}
-                    className="flex min-h-12 items-center rounded-xl px-4 text-base font-semibold text-[#4A4637] hover:bg-amber-light hover:text-amber"
+                    className="flex min-h-12 items-center rounded-xl px-4 text-base font-semibold text-muted hover:bg-brand-light hover:text-brand"
                   >
                     Notifications
                     {unreadCount > 0 ? (
@@ -367,14 +362,14 @@ export function NavBar({
                   <Link
                     href={profileHref}
                     onClick={() => setMenuOpen(false)}
-                    className="flex min-h-12 items-center rounded-xl px-4 text-base font-semibold text-[#4A4637] hover:bg-amber-light hover:text-amber"
+                    className="flex min-h-12 items-center rounded-xl px-4 text-base font-semibold text-muted hover:bg-brand-light hover:text-brand"
                   >
                     My Profile
                   </Link>
                   <Link
                     href={settingsHref}
                     onClick={() => setMenuOpen(false)}
-                    className="flex min-h-12 items-center rounded-xl px-4 text-base font-semibold text-[#4A4637] hover:bg-amber-light hover:text-amber"
+                    className="flex min-h-12 items-center rounded-xl px-4 text-base font-semibold text-muted hover:bg-brand-light hover:text-brand"
                   >
                     Settings
                   </Link>
@@ -396,14 +391,14 @@ export function NavBar({
                     <Link
                       href="/login"
                       onClick={() => setMenuOpen(false)}
-                      className="flex min-h-12 items-center justify-center rounded-lg border border-slate-300 px-4 text-base font-semibold text-[#3D3A2E]"
+                      className="btn btn-ghost btn-full flex min-h-12 items-center justify-center"
                     >
                       Log In
                     </Link>
                     <Link
                       href="/signup"
                       onClick={() => setMenuOpen(false)}
-                      className="flex min-h-12 items-center justify-center rounded-lg bg-[linear-gradient(180deg,#F6C14D_0%,#E8920A_100%)] px-4 text-base font-semibold text-white"
+                      className="btn btn-primary btn-full flex min-h-12 items-center justify-center"
                     >
                       Sign Up
                     </Link>

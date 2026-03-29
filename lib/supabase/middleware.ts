@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const AUTH_ROUTES = ["/login", "/signup"];
 const DASHBOARD_ROUTE = "/dashboard";
+const ONBOARDING_ROUTE = "/onboarding";
 
 function getSupabaseConfig() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -51,8 +52,9 @@ export async function updateSession(request: NextRequest) {
   );
   const isDashboardRoute =
     pathname === DASHBOARD_ROUTE || pathname.startsWith(`${DASHBOARD_ROUTE}/`);
+  const isOnboardingRoute = pathname === ONBOARDING_ROUTE;
 
-  if (!user && isDashboardRoute) {
+  if (!user && (isDashboardRoute || isOnboardingRoute)) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     loginUrl.searchParams.set("next", pathname);

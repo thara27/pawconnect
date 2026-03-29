@@ -22,8 +22,8 @@ export default function DashboardNavLinks() {
             href={item.href}
             className={`rounded-full px-4 py-1.5 text-sm font-semibold transition ${
               active
-                ? "bg-orange-light text-orange"
-                : "text-muted hover:bg-orange-light hover:text-orange"
+                ? "bg-brand-light text-brand"
+                : "text-muted hover:bg-brand-light hover:text-brand"
             }`}
           >
             {item.label}

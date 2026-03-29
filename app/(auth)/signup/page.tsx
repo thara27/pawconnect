@@ -68,20 +68,17 @@ export default function SignupPage() {
 
   return (
     <>
-      <p className="text-sm font-medium uppercase tracking-wide text-emerald-700">
+      <p className="badge badge-brand">
         PawConnect
       </p>
-      <h1 className="mt-2 text-2xl font-semibold text-slate-900">Create account</h1>
-      <p className="mt-2 text-sm text-slate-600">
+      <h1 className="heading-md mt-2">Create account</h1>
+      <p className="mt-2 text-sm text-muted">
         Choose your profile type to get started.
       </p>
 
       <form onSubmit={handleSignup} className="mt-8 space-y-4">
-        <div>
-          <label
-            htmlFor="fullName"
-            className="mb-1.5 block text-sm font-medium text-slate-700"
-          >
+        <div className="form-group">
+          <label htmlFor="fullName" className="form-label">
             Full name
           </label>
           <input
@@ -92,15 +89,11 @@ export default function SignupPage() {
             autoComplete="name"
             value={fullName}
             onChange={(event) => setFullName(event.target.value)}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
           />
         </div>
 
-        <div>
-          <label
-            htmlFor="email"
-            className="mb-1.5 block text-sm font-medium text-slate-700"
-          >
+        <div className="form-group">
+          <label htmlFor="email" className="form-label">
             Email
           </label>
           <input
@@ -111,15 +104,11 @@ export default function SignupPage() {
             autoComplete="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
           />
         </div>
 
-        <div>
-          <label
-            htmlFor="password"
-            className="mb-1.5 block text-sm font-medium text-slate-700"
-          >
+        <div className="form-group">
+          <label htmlFor="password" className="form-label">
             Password
           </label>
           <input
@@ -131,46 +120,47 @@ export default function SignupPage() {
             autoComplete="new-password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-slate-900 outline-none ring-emerald-200 transition focus:ring"
           />
         </div>
 
         <fieldset>
-          <legend className="mb-1.5 block text-sm font-medium text-slate-700">
+          <legend className="form-label mb-2">
             I am a
           </legend>
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-300 px-3 py-2">
+            <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-border px-3 py-2 transition hover:border-brand">
               <input
                 type="radio"
                 name="userType"
                 value="pet_owner"
                 checked={userType === "pet_owner"}
                 onChange={() => setUserType("pet_owner")}
+                style={{ width: "auto", minHeight: "auto" }}
               />
-              <span className="text-sm text-slate-700">Pet owner</span>
+              <span className="text-sm text-ink">Pet owner</span>
             </label>
-            <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-300 px-3 py-2">
+            <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-border px-3 py-2 transition hover:border-brand">
               <input
                 type="radio"
                 name="userType"
                 value="service_provider"
                 checked={userType === "service_provider"}
                 onChange={() => setUserType("service_provider")}
+                style={{ width: "auto", minHeight: "auto" }}
               />
-              <span className="text-sm text-slate-700">Service provider</span>
+              <span className="text-sm text-ink">Service provider</span>
             </label>
           </div>
         </fieldset>
 
         {errorMessage ? (
-          <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+          <p className="alert alert-error">
             {errorMessage}
           </p>
         ) : null}
 
         {successMessage ? (
-          <p className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
+          <p className="alert alert-success">
             {successMessage}
           </p>
         ) : null}
@@ -178,31 +168,31 @@ export default function SignupPage() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full rounded-lg bg-slate-900 px-4 py-2.5 font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
+          className="btn btn-primary btn-full"
         >
           {isLoading ? "Creating account..." : "Create account"}
         </button>
       </form>
 
       <div className="mt-4">
-        <div className="mb-4 flex items-center gap-3 text-xs text-slate-400">
-          <div className="h-px flex-1 bg-slate-200" />
+        <div className="mb-4 flex items-center gap-3 text-xs text-muted">
+          <div className="h-px flex-1 bg-border" />
           <span>OR</span>
-          <div className="h-px flex-1 bg-slate-200" />
+          <div className="h-px flex-1 bg-border" />
         </div>
         <button
           type="button"
           onClick={handleGoogleSignup}
           disabled={isGoogleLoading}
-          className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 font-medium text-slate-800 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+          className="btn btn-outline btn-full"
         >
           {isGoogleLoading ? "Redirecting to Google..." : "Continue with Google"}
         </button>
       </div>
 
-      <p className="mt-6 text-sm text-slate-600">
+      <p className="mt-6 text-sm text-muted">
         Already have an account?{" "}
-        <Link href="/login" className="font-medium text-slate-900 underline">
+        <Link href="/login" className="font-semibold text-brand underline">
           Log in
         </Link>
       </p>

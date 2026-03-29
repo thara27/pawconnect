@@ -4,24 +4,23 @@ import { Suspense, useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import PublicProviderCard from "@/app/components/providers/PublicProviderCard";
-import SignupNudge from "@/app/components/ui/SignupNudge";
 import { searchProviders } from "@/lib/actions/providers";
 import { SERVICE_TYPES } from "@/lib/types/provider";
 import type { ProviderSearchResult, SearchFilters } from "@/lib/types/provider";
 
 function SkeletonCard() {
   return (
-    <div className="animate-pulse rounded-2xl border border-slate-200 bg-white p-5">
+    <div className="card">
       <div className="flex items-start gap-4">
-        <div className="h-14 w-14 rounded-full bg-slate-200" />
+        <div className="skeleton h-14 w-14 rounded-full" />
         <div className="flex-1 space-y-2">
-          <div className="h-4 w-3/5 rounded bg-slate-200" />
-          <div className="h-3 w-1/3 rounded bg-slate-200" />
+          <div className="skeleton h-4 w-3/5" />
+          <div className="skeleton h-3 w-1/3" />
         </div>
       </div>
-      <div className="mt-4 h-3 w-1/2 rounded bg-slate-200" />
-      <div className="mt-2 h-3 w-2/3 rounded bg-slate-200" />
-      <div className="mt-5 h-8 w-28 rounded bg-slate-200" />
+      <div className="skeleton mt-4 h-3 w-1/2" />
+      <div className="skeleton mt-2 h-3 w-2/3" />
+      <div className="skeleton mt-5 h-8 w-28" />
     </div>
   );
 }
@@ -90,30 +89,23 @@ function SearchContent() {
     : `${results.length} provider${results.length !== 1 ? "s" : ""} found`;
 
   return (
-    <main className="min-h-screen bg-[#FDF8F3]">
-      <div className="mx-auto w-full max-w-6xl px-4 py-8">
-        <SignupNudge
-          message="Sign up free to book appointments, save favourites and manage your dog's health records"
-          ctaText="Join Free"
-        />
-      </div>
-
-      <div className="border-y border-orange-100 bg-white/80 px-4 py-5">
+    <main className="page-wrapper">
+      <div className="bg-white px-4 py-5 shadow-sm">
         <div className="mx-auto w-full max-w-6xl">
-          <h1 className="mb-4 text-3xl text-slate-900">Find Services</h1>
+          <h1 className="heading-md mb-4">Find Services</h1>
           <form onSubmit={handleSearch} className="flex flex-wrap gap-3">
             <input
               type="text"
               placeholder="Search by city e.g. Bangalore"
               value={city}
               onChange={(event) => setCity(event.target.value)}
-              className="min-w-[220px] flex-1 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#E8602C] focus:outline-none focus:ring-1 focus:ring-[#E8602C]"
+              className="min-w-[220px] flex-1"
             />
 
             <select
               value={serviceType}
               onChange={(event) => setServiceType(event.target.value)}
-              className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 focus:border-[#E8602C] focus:outline-none focus:ring-1 focus:ring-[#E8602C]"
+              style={{ width: 'auto' }}
             >
               <option value="">All Services</option>
               {SERVICE_TYPES.map((service) => (
@@ -123,12 +115,13 @@ function SearchContent() {
               ))}
             </select>
 
-            <label className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-700">
+            <label className="flex items-center gap-2 rounded-lg border border-border bg-white px-4 py-2.5 text-sm text-ink cursor-pointer">
               <input
                 type="checkbox"
                 checked={isAvailable}
                 onChange={(event) => setIsAvailable(event.target.checked)}
-                className="h-4 w-4 rounded border-slate-300 text-[#E8602C] focus:ring-[#E8602C]"
+                className="h-4 w-4"
+                style={{ width: 'auto', minHeight: 'auto' }}
               />
               Available now
             </label>
@@ -136,7 +129,7 @@ function SearchContent() {
             <select
               value={minRating}
               onChange={(event) => setMinRating(event.target.value)}
-              className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 focus:border-[#E8602C] focus:outline-none focus:ring-1 focus:ring-[#E8602C]"
+              style={{ width: 'auto' }}
             >
               <option value="">Any</option>
               <option value="3">3+</option>
@@ -144,10 +137,7 @@ function SearchContent() {
               <option value="4.5">4.5+</option>
             </select>
 
-            <button
-              type="submit"
-              className="rounded-lg bg-[#E8602C] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-[#cf5222]"
-            >
+            <button type="submit" className="btn btn-primary">
               Search
             </button>
           </form>
@@ -156,12 +146,12 @@ function SearchContent() {
 
       <div className="mx-auto w-full max-w-6xl px-4 py-8">
         {fetchError && (
-          <div className="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <div className="alert alert-error mb-5">
             {fetchError}
           </div>
         )}
 
-        {!isLoading && hasLoaded && <p className="mb-5 text-sm text-slate-600">{resultLabel}</p>}
+        {!isLoading && hasLoaded && <p className="mb-5 text-sm text-muted">{resultLabel}</p>}
 
         {isLoading ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -176,10 +166,10 @@ function SearchContent() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-white py-20 text-center">
-            <div className="text-6xl" aria-hidden="true">🔎</div>
-            <h2 className="mt-4 text-2xl text-slate-900">No providers found</h2>
-            <p className="mt-2 max-w-sm text-sm text-slate-600">Try a different city or service type</p>
+          <div className="empty-state card">
+            <div className="empty-state-icon">🔎</div>
+            <h2 className="empty-state-title">No providers found</h2>
+            <p className="empty-state-desc">Try a different city or service type</p>
           </div>
         )}
       </div>
@@ -192,7 +182,7 @@ export default function PublicSearchPage() {
     <Suspense
       fallback={
         <main className="flex min-h-screen items-center justify-center bg-[#FDF8F3]">
-          <p className="text-slate-600">Loading search...</p>
+          <p className="text-muted">Loading search...</p>
         </main>
       }
     >

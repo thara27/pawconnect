@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -18,10 +18,10 @@ const TAB_LABELS: Array<{ key: Tab; label: string }> = [
 ];
 
 function statusBadge(status: BookingStatus): string {
-  if (status === "pending") return "bg-amber-100 text-amber-800";
-  if (status === "confirmed") return "bg-emerald-100 text-emerald-800";
-  if (status === "completed") return "bg-slate-100 text-slate-700";
-  return "bg-red-100 text-red-700";
+  if (status === "pending") return "badge badge-warning";
+  if (status === "confirmed") return "badge badge-success";
+  if (status === "completed") return "badge badge-neutral";
+  return "badge badge-error";
 }
 
 function statusText(status: BookingStatus): string {
@@ -74,19 +74,19 @@ export default function PetOwnerBookingsClient({ bookings, success }: Props) {
   }
 
   return (
-    <main className="min-h-screen bg-bg px-4 py-8">
+    <main className="bg-bg px-4 py-8">
       <section className="mx-auto w-full max-w-4xl">
-        <h1 className="text-3xl font-semibold text-slate-900">My bookings</h1>
-        <p className="mt-1 text-sm text-slate-600">Track all your service bookings in one place.</p>
+        <h1 className="heading-md">My bookings</h1>
+        <p className="mt-1 text-sm text-muted">Track all your service bookings in one place.</p>
 
         {success && (
-          <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+          <div className="alert alert-success mt-4">
             Booking request sent successfully.
           </div>
         )}
 
         {error && (
-          <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <div className="alert alert-error mt-4">
             {error}
           </div>
         )}
@@ -97,10 +97,10 @@ export default function PetOwnerBookingsClient({ bookings, success }: Props) {
               key={item.key}
               type="button"
               onClick={() => setTab(item.key)}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
+              className={`btn btn-sm rounded-full ${
                 tab === item.key
-                  ? "bg-orange text-white shadow-sm"
-                  : "border border-border bg-white text-muted hover:border-orange hover:bg-orange-light hover:text-orange"
+                  ? "btn-primary"
+                  : "btn-outline"
               }`}
             >
               {item.label}
@@ -109,13 +109,10 @@ export default function PetOwnerBookingsClient({ bookings, success }: Props) {
         </div>
 
         {filtered.length === 0 ? (
-          <div className="mt-6 rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-            <p className="text-slate-700">No {tab === "all" ? "" : tab} bookings yet</p>
+          <div className="empty-state card mt-6">
+            <p className="text-muted">No {tab === "all" ? "" : tab} bookings yet</p>
             {tab === "all" && (
-              <Link
-                href="/search"
-                className="mt-3 inline-flex rounded-lg bg-[#E8602C] px-4 py-2 text-sm font-semibold text-white"
-              >
+              <Link href="/search" className="btn btn-primary btn-sm mt-3">
                 Find a service
               </Link>
             )}
@@ -125,10 +122,10 @@ export default function PetOwnerBookingsClient({ bookings, success }: Props) {
             {filtered.map((booking) => {
               const canCancel = booking.status === "pending" || booking.status === "confirmed";
               return (
-                <article key={booking.id} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <article key={booking.id} className="card">
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="relative h-12 w-12 overflow-hidden rounded-full bg-slate-100">
+                      <div className="relative h-12 w-12 overflow-hidden rounded-full bg-bg">
                         {booking.provider.avatar_url ? (
                           <Image
                             src={booking.provider.avatar_url}
@@ -138,22 +135,22 @@ export default function PetOwnerBookingsClient({ bookings, success }: Props) {
                             sizes="48px"
                           />
                         ) : (
-                          <div className="flex h-full items-center justify-center text-xs font-semibold text-slate-500">
+                          <div className="flex h-full items-center justify-center text-xs font-semibold text-muted">
                             {booking.provider.business_name.slice(0, 2).toUpperCase()}
                           </div>
                         )}
                       </div>
                       <div>
-                        <p className="font-medium text-slate-900">{booking.provider.business_name}</p>
-                        <p className="text-xs text-slate-500">{booking.provider.service_type}</p>
+                        <p className="font-medium text-ink">{booking.provider.business_name}</p>
+                        <p className="text-xs text-muted">{booking.provider.service_type}</p>
                       </div>
                     </div>
-                    <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${statusBadge(booking.status)}`}>
+                    <span className={statusBadge(booking.status)}>
                       {statusText(booking.status)}
                     </span>
                   </div>
 
-                  <div className="mt-3 grid gap-2 text-sm text-slate-700 sm:grid-cols-2">
+                  <div className="mt-3 grid gap-2 text-sm text-ink sm:grid-cols-2">
                     <p><span className="font-medium">Pet:</span> {booking.pet.name} ({booking.pet.breed || booking.pet.species})</p>
                     <p><span className="font-medium">Date:</span> {booking.booking_date}</p>
                     <p><span className="font-medium">Time:</span> {booking.start_time} - {booking.end_time}</p>
@@ -166,7 +163,7 @@ export default function PetOwnerBookingsClient({ bookings, success }: Props) {
                         type="button"
                         disabled={isPending}
                         onClick={() => handleCancel(booking)}
-                        className="rounded-lg border border-red-300 px-3 py-1.5 text-sm font-medium text-red-700 transition hover:bg-red-50 disabled:opacity-60"
+                        className="btn btn-ghost btn-sm text-error hover:bg-error/10 disabled:opacity-60"
                       >
                         Cancel booking
                       </button>

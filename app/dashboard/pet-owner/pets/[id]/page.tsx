@@ -21,15 +21,15 @@ export default async function PetDetailsPage({
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 px-6 py-10">
+    <main className="min-h-screen bg-bg px-6 py-10">
       <section className="mx-auto w-full max-w-4xl space-y-6">
-        <div className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:flex-row sm:items-start sm:justify-between">
+        <div className="card flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <p className="text-sm font-medium uppercase tracking-wide text-emerald-700">
+            <p className="text-sm font-medium uppercase tracking-wide text-sage">
               PawConnect
             </p>
-            <h1 className="mt-1 text-3xl font-semibold text-slate-900">{pet.name}</h1>
-            <p className="mt-2 text-sm text-slate-600">
+            <h1 className="mt-1 text-3xl font-semibold text-ink">{pet.name}</h1>
+            <p className="mt-2 text-sm text-muted">
               {pet.species} {pet.breed ? `- ${pet.breed}` : ""}
             </p>
           </div>
@@ -37,13 +37,13 @@ export default async function PetDetailsPage({
           <div className="flex flex-wrap gap-3">
             <Link
               href="/dashboard/pet-owner/pets"
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+              className="btn btn-outline btn-sm"
             >
               Back to pets
             </Link>
             <Link
               href={`/dashboard/pet-owner/pets/${pet.id}/edit`}
-              className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+              className="btn btn-primary btn-sm"
             >
               Edit profile
             </Link>
@@ -51,13 +51,13 @@ export default async function PetDetailsPage({
         </div>
 
         {status === "updated" ? (
-          <p className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+          <p className="rounded-lg border border-sage-light bg-sage-light px-4 py-3 text-sm text-sage">
             Pet profile updated successfully.
           </p>
         ) : null}
 
         <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <article className="card overflow-hidden">
             {pet.photo_url ? (
               <div className="relative h-72 w-full overflow-hidden">
                 <Image
@@ -69,58 +69,58 @@ export default async function PetDetailsPage({
                 />
               </div>
             ) : (
-              <div className="flex h-72 w-full items-center justify-center bg-slate-100 text-slate-500">
+              <div className="flex h-72 w-full items-center justify-center bg-bg text-muted">
                 No photo uploaded
               </div>
             )}
           </article>
 
-          <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">Profile details</h2>
-            <dl className="mt-4 grid grid-cols-1 gap-4 text-sm text-slate-600 sm:grid-cols-2">
+          <article className="card">
+            <h2 className="heading-sm">Profile details</h2>
+            <dl className="mt-4 grid grid-cols-1 gap-4 text-sm text-muted sm:grid-cols-2">
               <div>
-                <dt className="font-medium text-slate-900">Age</dt>
+                <dt className="font-medium text-ink">Age</dt>
                 <dd>{pet.age_years ?? "Not set"}</dd>
               </div>
               <div>
-                <dt className="font-medium text-slate-900">Weight</dt>
+                <dt className="font-medium text-ink">Weight</dt>
                 <dd>{pet.weight_kg ? `${pet.weight_kg} kg` : "Not set"}</dd>
               </div>
               <div>
-                <dt className="font-medium text-slate-900">Gender</dt>
+                <dt className="font-medium text-ink">Gender</dt>
                 <dd>{pet.gender ?? "Not set"}</dd>
               </div>
               <div>
-                <dt className="font-medium text-slate-900">Blood type</dt>
+                <dt className="font-medium text-ink">Blood type</dt>
                 <dd>{pet.blood_type ?? "Not set"}</dd>
               </div>
               <div>
-                <dt className="font-medium text-slate-900">Color</dt>
+                <dt className="font-medium text-ink">Color</dt>
                 <dd>{pet.color ?? "Not set"}</dd>
               </div>
               <div>
-                <dt className="font-medium text-slate-900">Microchip ID</dt>
+                <dt className="font-medium text-ink">Microchip ID</dt>
                 <dd>{pet.microchip_id ?? "Not set"}</dd>
               </div>
               <div>
-                <dt className="font-medium text-slate-900">Vaccination</dt>
+                <dt className="font-medium text-ink">Vaccination</dt>
                 <dd>{pet.is_vaccinated ? "Vaccinated" : "Not vaccinated"}</dd>
               </div>
               <div>
-                <dt className="font-medium text-slate-900">Created</dt>
+                <dt className="font-medium text-ink">Created</dt>
                 <dd>{new Date(pet.created_at).toLocaleDateString()}</dd>
               </div>
               <div className="sm:col-span-2">
-                <dt className="font-medium text-slate-900">Medical notes</dt>
+                <dt className="font-medium text-ink">Medical notes</dt>
                 <dd>{pet.medical_notes ?? "No medical notes added."}</dd>
               </div>
             </dl>
           </article>
         </div>
 
-        <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">Danger zone</h2>
-          <p className="mt-1 text-sm text-slate-600">
+        <article className="card">
+          <h2 className="heading-sm">Danger zone</h2>
+          <p className="mt-1 text-sm text-muted">
             Delete this pet profile if you no longer want it in PawConnect.
           </p>
           <div className="mt-4">

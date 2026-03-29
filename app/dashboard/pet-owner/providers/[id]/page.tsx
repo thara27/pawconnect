@@ -17,7 +17,7 @@ function StarRating({ rating, large = false }: { rating: number; large?: boolean
       {Array.from({ length: 5 }, (_, i) => (
         <svg
           key={i}
-          className={`${size} ${i < filled ? "text-amber-400" : "text-slate-200"}`}
+          className={`${size} ${i < filled ? "text-brand" : "text-border"}`}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -35,7 +35,7 @@ function InitialsAvatar({ seed, sizeClass }: { seed: string; sizeClass: string }
   const initials = `${a}${b}`;
   return (
     <div
-      className={`flex items-center justify-center rounded-full bg-slate-200 font-semibold text-slate-600 ${sizeClass}`}
+      className={`flex items-center justify-center rounded-full bg-bg font-semibold text-muted ${sizeClass}`}
     >
       {initials}
     </div>
@@ -49,18 +49,18 @@ function ReviewCard({ review }: { review: ProviderReview }) {
     day: "numeric",
   });
   return (
-    <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
+    <div className="rounded-xl border border-border bg-bg p-4">
       <div className="flex items-start gap-3">
         <InitialsAvatar seed={review.reviewer_id} sizeClass="h-9 w-9 flex-shrink-0 text-sm" />
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-2">
             <StarRating rating={review.rating} />
-            <time className="text-xs text-slate-400" dateTime={review.created_at}>
+            <time className="text-xs text-muted" dateTime={review.created_at}>
               {date}
             </time>
           </div>
           {review.comment && (
-            <p className="mt-1.5 text-sm text-slate-700">{review.comment}</p>
+            <p className="mt-1.5 text-sm text-ink">{review.comment}</p>
           )}
         </div>
       </div>
@@ -97,14 +97,14 @@ export default async function ProviderDetailPage({
   const openDays = new Set(provider.availability.map((a) => a.day_of_week));
 
   return (
-    <main className="min-h-screen bg-slate-50 px-4 pb-28 pt-8 md:pb-10">
+    <main className="min-h-screen bg-bg px-4 pb-28 pt-8 md:pb-10">
       <div className="mx-auto max-w-3xl space-y-6">
         {/* ---------------------------------------------------------------- */}
         {/* Back link                                                          */}
         {/* ---------------------------------------------------------------- */}
         <Link
           href="/dashboard/pet-owner/search"
-          className="inline-flex items-center gap-1 text-sm text-slate-500 transition hover:text-slate-900"
+          className="inline-flex items-center gap-1 text-sm text-muted transition hover:text-ink"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -115,7 +115,7 @@ export default async function ProviderDetailPage({
         {/* ---------------------------------------------------------------- */}
         {/* HEADER                                                             */}
         {/* ---------------------------------------------------------------- */}
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section className="card">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
             {/* Avatar */}
             <div className="relative h-20 w-20 flex-shrink-0">
@@ -128,7 +128,7 @@ export default async function ProviderDetailPage({
                   sizes="80px"
                 />
               ) : (
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-orange-100 text-2xl font-bold text-orange-700">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-brand-light text-2xl font-bold text-brand-dark">
                   {provider.business_name
                     .split(/\s+/)
                     .slice(0, 2)
@@ -141,20 +141,20 @@ export default async function ProviderDetailPage({
             {/* Info */}
             <div className="flex-1">
               <div className="flex flex-wrap items-center gap-3">
-                <h1 className="text-2xl font-bold text-slate-900">{provider.business_name}</h1>
-                <span className="rounded-full bg-orange-100 px-3 py-0.5 text-sm font-medium text-orange-700">
+                <h1 className="text-2xl font-bold text-ink">{provider.business_name}</h1>
+                <span className="badge badge-brand">
                   {serviceLabel}
                 </span>
                 <span
-                  className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                  className={`badge ${
                     provider.is_available
-                      ? "bg-emerald-100 text-emerald-700"
-                      : "bg-slate-100 text-slate-500"
+                      ? "badge-success"
+                      : "badge-neutral"
                   }`}
                 >
                   <span
                     className={`h-1.5 w-1.5 rounded-full ${
-                      provider.is_available ? "bg-emerald-500" : "bg-slate-400"
+                      provider.is_available ? "bg-sage" : "bg-muted"
                     }`}
                   />
                   {provider.is_available ? "Available today" : "Unavailable"}
@@ -163,42 +163,42 @@ export default async function ProviderDetailPage({
 
               <div className="mt-2 flex items-center gap-2">
                 <StarRating rating={provider.avg_rating} large />
-                <span className="text-sm text-slate-600">
+                <span className="text-sm text-muted">
                   {provider.avg_rating > 0
                     ? provider.avg_rating.toFixed(1)
                     : "No ratings yet"}
                   {provider.review_count > 0 && (
-                    <span className="ml-1 text-slate-400">
+                    <span className="ml-1 text-muted">
                       ({provider.review_count} review{provider.review_count !== 1 ? "s" : ""})
                     </span>
                   )}
                 </span>
               </div>
 
-              <ul className="mt-3 space-y-1 text-sm text-slate-600">
+              <ul className="mt-3 space-y-1 text-sm text-muted">
                 <li className="flex items-center gap-2">
-                  <svg className="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="h-4 w-4 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                   {provider.address}, {provider.city}, {provider.state} – {provider.pincode}
                 </li>
                 <li className="flex items-center gap-2">
-                  <svg className="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="h-4 w-4 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                   {provider.phone}
                 </li>
                 {provider.website && (
                   <li className="flex items-center gap-2">
-                    <svg className="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <svg className="h-4 w-4 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                     </svg>
                     <a
                       href={provider.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-orange-600 hover:underline"
+                      className="text-brand hover:underline"
                     >
                       {provider.website}
                     </a>
@@ -212,42 +212,42 @@ export default async function ProviderDetailPage({
         {/* ---------------------------------------------------------------- */}
         {/* PRICING                                                            */}
         {/* ---------------------------------------------------------------- */}
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="mb-4 font-semibold text-slate-900">Pricing &amp; experience</h2>
+        <section className="card">
+          <h2 className="mb-4 font-semibold text-ink">Pricing &amp; experience</h2>
           <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {(provider.price_from !== null || provider.price_to !== null) && (
               <div>
-                <dt className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                <dt className="text-xs font-medium uppercase tracking-wide text-muted">
                   Price range
                 </dt>
-                <dd className="mt-1 text-sm font-semibold text-slate-900">
+                <dd className="mt-1 text-sm font-semibold text-ink">
                   {provider.price_from !== null && provider.price_to !== null
                     ? `₹${provider.price_from.toLocaleString("en-IN")} – ₹${provider.price_to.toLocaleString("en-IN")}`
                     : provider.price_from !== null
                       ? `From ₹${provider.price_from.toLocaleString("en-IN")}`
                       : `Up to ₹${provider.price_to!.toLocaleString("en-IN")}`}
                   {priceUnitLabel && (
-                    <span className="ml-1 font-normal text-slate-500">/ {priceUnitLabel}</span>
+                    <span className="ml-1 font-normal text-muted">/ {priceUnitLabel}</span>
                   )}
                 </dd>
               </div>
             )}
             {provider.years_experience !== null && (
               <div>
-                <dt className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                <dt className="text-xs font-medium uppercase tracking-wide text-muted">
                   Experience
                 </dt>
-                <dd className="mt-1 text-sm font-semibold text-slate-900">
+                <dd className="mt-1 text-sm font-semibold text-ink">
                   {provider.years_experience} year{provider.years_experience !== 1 ? "s" : ""}
                 </dd>
               </div>
             )}
             {provider.license_number && (
               <div>
-                <dt className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                <dt className="text-xs font-medium uppercase tracking-wide text-muted">
                   License
                 </dt>
-                <dd className="mt-1 text-sm text-slate-700">{provider.license_number}</dd>
+                <dd className="mt-1 text-sm text-ink">{provider.license_number}</dd>
               </div>
             )}
           </dl>
@@ -256,18 +256,18 @@ export default async function ProviderDetailPage({
         {/* ---------------------------------------------------------------- */}
         {/* WEEKLY SCHEDULE                                                    */}
         {/* ---------------------------------------------------------------- */}
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="mb-4 font-semibold text-slate-900">Weekly schedule</h2>
+        <section className="card">
+          <h2 className="mb-4 font-semibold text-ink">Weekly schedule</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-border">
                 {DAYS_OF_WEEK.map((day, idx) => {
                   const slot = provider.availability.find((a) => a.day_of_week === idx);
                   const isOpen = openDays.has(idx);
                   return (
                     <tr
                       key={day}
-                      className={isOpen ? "text-slate-900" : "text-slate-400"}
+                      className={isOpen ? "text-ink" : "text-muted"}
                     >
                       <td className="py-2 pr-4 font-medium w-28">{day}</td>
                       <td className="py-2">
@@ -291,20 +291,20 @@ export default async function ProviderDetailPage({
         {/* ABOUT                                                              */}
         {/* ---------------------------------------------------------------- */}
         {provider.description && (
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="mb-3 font-semibold text-slate-900">About</h2>
-            <p className="text-sm leading-relaxed text-slate-700">{provider.description}</p>
+          <section className="card">
+            <h2 className="mb-3 font-semibold text-ink">About</h2>
+            <p className="text-sm leading-relaxed text-muted">{provider.description}</p>
           </section>
         )}
 
         {/* ---------------------------------------------------------------- */}
         {/* REVIEWS                                                            */}
         {/* ---------------------------------------------------------------- */}
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="mb-4 font-semibold text-slate-900">
+        <section className="card">
+          <h2 className="mb-4 font-semibold text-ink">
             Reviews
             {provider.review_count > 0 && (
-              <span className="ml-2 text-sm font-normal text-slate-400">
+              <span className="ml-2 text-sm font-normal text-muted">
                 ({provider.review_count})
               </span>
             )}
@@ -316,7 +316,7 @@ export default async function ProviderDetailPage({
               ))}
             </div>
           ) : (
-            <p className="text-sm italic text-slate-400">
+            <p className="text-sm italic text-muted">
               No reviews yet. Be the first to leave one!
             </p>
           )}
@@ -326,10 +326,10 @@ export default async function ProviderDetailPage({
       {/* ------------------------------------------------------------------ */}
       {/* STICKY BOOK NOW (mobile)                                             */}
       {/* ------------------------------------------------------------------ */}
-      <div className="fixed bottom-0 left-0 right-0 border-t border-slate-200 bg-white px-4 py-3 md:hidden">
+      <div className="fixed bottom-0 left-0 right-0 border-t border-border bg-white px-4 py-3 md:hidden">
         <Link
           href={`/dashboard/pet-owner/providers/${provider.id}/book`}
-          className="block w-full rounded-xl bg-orange-600 py-3 text-center text-sm font-semibold text-white transition hover:bg-orange-700"
+          className="btn btn-primary btn-full"
         >
           Book now
         </Link>
@@ -339,7 +339,7 @@ export default async function ProviderDetailPage({
       <div className="mx-auto mt-4 max-w-3xl px-4 hidden md:block">
         <Link
           href={`/dashboard/pet-owner/providers/${provider.id}/book`}
-          className="inline-block rounded-xl bg-orange-600 px-8 py-3 text-sm font-semibold text-white transition hover:bg-orange-700"
+          className="btn btn-primary"
         >
           Book now
         </Link>

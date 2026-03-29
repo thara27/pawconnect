@@ -156,22 +156,22 @@ export default function BookingWizard({ provider, pets }: BookingWizardProps) {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-8">
+    <main className="min-h-screen bg-bg px-4 py-8">
       <div className="mx-auto w-full max-w-3xl space-y-6">
         <div>
           <Link
             href={`/dashboard/pet-owner/providers/${provider.id}`}
-            className="text-sm font-medium text-slate-500 hover:text-slate-900"
+            className="text-sm font-medium text-muted hover:text-ink"
           >
             ← Back to provider
           </Link>
-          <h1 className="mt-2 text-3xl font-semibold text-slate-900">Book service</h1>
-          <p className="mt-1 text-sm text-slate-600">
+          <h1 className="mt-2 text-3xl font-semibold text-ink">Book service</h1>
+          <p className="mt-1 text-sm text-muted">
             Booking with {provider.business_name} ({provider.service_type})
           </p>
         </div>
 
-        <div className="grid grid-cols-4 gap-2 rounded-xl border border-slate-200 bg-white p-3">
+        <div className="card grid grid-cols-4 gap-2 p-3">
           {STEP_LABELS.map((label, index) => {
             const current = index + 1;
             const active = step === current;
@@ -181,31 +181,31 @@ export default function BookingWizard({ provider, pets }: BookingWizardProps) {
                 <div
                   className={`mx-auto mb-1 flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold ${
                     active
-                      ? "bg-[#E8602C] text-white"
+                      ? "bg-brand text-white"
                       : completed
-                        ? "bg-emerald-600 text-white"
-                        : "bg-slate-200 text-slate-600"
+                        ? "bg-sage text-white"
+                        : "bg-border text-muted"
                   }`}
                 >
                   {current}
                 </div>
-                <p className="text-xs text-slate-600">{label}</p>
+                <p className="text-xs text-muted">{label}</p>
               </div>
             );
           })}
         </div>
 
         {error && (
-          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <div className="alert alert-error">
             {error}
           </div>
         )}
 
         {step === 1 && (
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">Step 1: Select pet</h2>
+          <section className="card">
+            <h2 className="heading-sm">Step 1: Select pet</h2>
             {pets.length === 0 ? (
-              <p className="mt-3 text-sm text-slate-600">
+              <p className="mt-3 text-sm text-muted">
                 You need at least one pet profile before booking.
               </p>
             ) : (
@@ -219,11 +219,11 @@ export default function BookingWizard({ provider, pets }: BookingWizardProps) {
                       onClick={() => setSelectedPetId(pet.id)}
                       className={`flex items-center gap-3 rounded-xl border p-3 text-left transition ${
                         selected
-                          ? "border-[#E8602C] bg-orange-50"
-                          : "border-slate-200 hover:border-[#E8602C]"
+                          ? "border-brand bg-brand-light"
+                          : "border-border hover:border-brand"
                       }`}
                     >
-                      <div className="relative h-14 w-14 overflow-hidden rounded-full bg-slate-100">
+                      <div className="relative h-14 w-14 overflow-hidden rounded-full bg-bg">
                         {pet.photo_url ? (
                           <Image
                             src={pet.photo_url}
@@ -233,14 +233,14 @@ export default function BookingWizard({ provider, pets }: BookingWizardProps) {
                             sizes="56px"
                           />
                         ) : (
-                          <div className="flex h-full items-center justify-center text-xs font-semibold text-slate-500">
+                          <div className="flex h-full items-center justify-center text-xs font-semibold text-muted">
                             {pet.name.slice(0, 2).toUpperCase()}
                           </div>
                         )}
                       </div>
                       <div>
-                        <p className="font-medium text-slate-900">{pet.name}</p>
-                        <p className="text-sm text-slate-600">{pet.breed || pet.species}</p>
+                        <p className="font-medium text-ink">{pet.name}</p>
+                        <p className="text-sm text-muted">{pet.breed || pet.species}</p>
                       </div>
                     </button>
                   );
@@ -251,9 +251,9 @@ export default function BookingWizard({ provider, pets }: BookingWizardProps) {
         )}
 
         {step === 2 && (
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">Step 2: Select date</h2>
-            <p className="mt-1 text-sm text-slate-600">
+          <section className="card">
+            <h2 className="heading-sm">Step 2: Select date</h2>
+            <p className="mt-1 text-sm text-muted">
               Available weekdays: {provider.availabilityDays.map((day) => ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][day]).join(", ") || "None"}
             </p>
             <input
@@ -262,22 +262,22 @@ export default function BookingWizard({ provider, pets }: BookingWizardProps) {
               max={maxDateISO}
               value={selectedDate}
               onChange={(event) => handleDateChange(event.target.value)}
-              className="mt-4 rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-900 focus:border-[#E8602C] focus:outline-none focus:ring-1 focus:ring-[#E8602C]"
+              className="mt-4 rounded-lg border border-border px-4 py-2.5 text-sm text-ink focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
             />
           </section>
         )}
 
         {step === 3 && (
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">Step 3: Select time slot</h2>
-            <p className="mt-1 text-sm text-slate-600">
+          <section className="card">
+            <h2 className="heading-sm">Step 3: Select time slot</h2>
+            <p className="mt-1 text-sm text-muted">
               {selectedDate ? formatDate(selectedDate) : "Select a date first"}
             </p>
 
             {loadingSlots ? (
-              <p className="mt-4 text-sm text-slate-500">Loading available slots...</p>
+              <p className="mt-4 text-sm text-muted">Loading available slots...</p>
             ) : slots.length === 0 ? (
-              <p className="mt-4 text-sm text-slate-500">No slots available.</p>
+              <p className="mt-4 text-sm text-muted">No slots available.</p>
             ) : (
               <div className="mt-4 flex flex-wrap gap-2">
                 {slots.map((slot) => {
@@ -292,10 +292,10 @@ export default function BookingWizard({ provider, pets }: BookingWizardProps) {
                       onClick={() => setSelectedSlot(slot)}
                       className={`rounded-full border px-4 py-1.5 text-sm transition ${
                         !slot.is_available
-                          ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400 line-through"
+                          ? "cursor-not-allowed border-border bg-bg text-muted line-through"
                           : selected
-                            ? "border-[#E8602C] bg-[#E8602C] text-white"
-                            : "border-slate-300 bg-white text-slate-700 hover:border-[#E8602C]"
+                            ? "border-brand bg-brand text-white"
+                            : "border-border bg-white text-ink hover:border-brand"
                       }`}
                     >
                       {slot.start_time} - {slot.end_time}
@@ -308,9 +308,9 @@ export default function BookingWizard({ provider, pets }: BookingWizardProps) {
         )}
 
         {step === 4 && (
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">Step 4: Confirm booking</h2>
-            <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+          <section className="card">
+            <h2 className="heading-sm">Step 4: Confirm booking</h2>
+            <div className="mt-4 rounded-xl border border-border bg-bg p-4 text-sm text-ink">
               <p><span className="font-medium">Provider:</span> {provider.business_name} ({provider.service_type})</p>
               <p className="mt-1"><span className="font-medium">Pet:</span> {selectedPet?.name} ({selectedPet?.breed || selectedPet?.species})</p>
               <p className="mt-1"><span className="font-medium">Date:</span> {selectedSlot ? formatDate(selectedSlot.date) : "-"}</p>
@@ -318,13 +318,13 @@ export default function BookingWizard({ provider, pets }: BookingWizardProps) {
               <p className="mt-1"><span className="font-medium">Price:</span> ₹{(provider.price_from ?? 0).toLocaleString("en-IN")}</p>
             </div>
 
-            <label className="mt-4 block text-sm font-medium text-slate-700">Notes (optional)</label>
+            <label className="mt-4 block text-sm font-medium text-ink">Notes (optional)</label>
             <textarea
               value={notes}
               onChange={(event) => setNotes(event.target.value)}
               rows={4}
               placeholder="Anything your provider should know"
-              className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#E8602C] focus:outline-none focus:ring-1 focus:ring-[#E8602C]"
+              className="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm text-ink placeholder:text-muted focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
             />
           </section>
         )}
@@ -334,7 +334,7 @@ export default function BookingWizard({ provider, pets }: BookingWizardProps) {
             type="button"
             onClick={goBack}
             disabled={step === 1}
-            className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+            className="btn btn-outline btn-sm disabled:cursor-not-allowed disabled:opacity-50"
           >
             Back
           </button>
@@ -343,7 +343,7 @@ export default function BookingWizard({ provider, pets }: BookingWizardProps) {
             <button
               type="button"
               onClick={goNext}
-              className="rounded-lg bg-[#E8602C] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#cf5222]"
+              className="btn btn-primary btn-sm"
             >
               Continue
             </button>
@@ -352,7 +352,7 @@ export default function BookingWizard({ provider, pets }: BookingWizardProps) {
               type="button"
               onClick={submitBooking}
               disabled={isSubmitting}
-              className="rounded-lg bg-[#E8602C] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#cf5222] disabled:opacity-60"
+              className="btn btn-primary btn-sm disabled:opacity-60"
             >
               {isSubmitting ? "Confirming..." : "Confirm Booking"}
             </button>
