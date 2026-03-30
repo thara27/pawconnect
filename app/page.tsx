@@ -6,7 +6,7 @@ export default async function Home() {
   return (
     <main className="bg-bg text-ink">
       <section className="px-3 pb-10 pt-4 sm:px-4 sm:pt-5">
-        <div className="relative mx-auto h-[560px] w-full max-w-7xl overflow-hidden rounded-[32px] bg-[#FFF8E7] shadow-[0_24px_80px_rgba(187,132,42,0.24)]">
+        <div className="relative mx-auto h-[600px] w-full max-w-7xl overflow-hidden rounded-[32px] bg-[#FFF8E7] shadow-[0_24px_80px_rgba(187,132,42,0.24)]">
           {/* Full-width background image — warm gold behind transparent areas */}
           <div className="absolute inset-0 z-0 bg-[#FFF0C0]">
             <Image
@@ -22,6 +22,7 @@ export default async function Home() {
           <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#FFF8E7]/95 via-[#FFF8E7]/65 via-40% to-transparent" />
           <div className="absolute inset-0 z-10 bg-gradient-to-l from-[#FFE082]/25 to-transparent" />
 
+          {/* Hero text */}
           {/* Hero text */}
           <div className="relative z-20 flex h-full max-w-lg flex-col justify-center px-8 py-10">
             <span className="inline-flex w-fit items-center rounded-full border border-[#E7C56F] bg-white px-4 py-1.5 text-xs font-semibold text-[#8B5E00] shadow-sm">
@@ -44,16 +45,28 @@ export default async function Home() {
                 Join Community
               </Link>
             </div>
+          </div>
 
-            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[0.78rem] font-semibold text-gray-600">
-              <span>&#10003; 10,000+ dog owners</span>
-              <span>&#10003; 500+ verified vets</span>
-              <span>&#10003; Free to join</span>
-            </div>
+          {/* WHAT WE OFFER heading — above the white wave */}
+          <div className="absolute bottom-20 left-0 right-0 z-20 text-center">
+            <p className="mb-0.5 text-[0.65rem] font-bold uppercase tracking-[0.12em]" style={{ color: '#ff5722' }}>
+              WHAT WE OFFER
+            </p>
+            <p className="font-fraunces text-[1.1rem] font-black leading-[1.2] text-ink">
+              Everything your dog deserves,{' '}
+              <em style={{ fontStyle: 'italic', color: '#ff5722' }}>in one place</em>
+            </p>
           </div>
 
           {/* Bottom wave */}
-          <div className="absolute bottom-0 left-0 right-0 z-30 h-12 rounded-t-[50%] bg-[#FAFAF7]" />
+          <div className="absolute bottom-0 left-0 right-0 z-30 h-16 rounded-t-[50%] bg-[#FAFAF7]" />
+
+          {/* Stats — inside white wave */}
+          <div className="absolute bottom-3 left-0 right-0 z-40 flex flex-wrap justify-center gap-x-6 gap-y-0.5 text-[0.75rem] font-semibold text-gray-600">
+            <span>&#10003; 10,000+ dog owners</span>
+            <span>&#10003; 500+ verified vets</span>
+            <span>&#10003; Free to join</span>
+          </div>
         </div>
       </section>
 
@@ -61,23 +74,9 @@ export default async function Home() {
       <section
         id="about"
         className="relative overflow-hidden"
-        style={{ padding: '5rem 2rem', background: 'linear-gradient(180deg, #FDF8F3 0%, #FFF8EE 50%, #FDF8F3 100%)' }}
+        style={{ padding: '3rem 2rem', background: 'linear-gradient(180deg, #FDF8F3 0%, #FFF8EE 50%, #FDF8F3 100%)' }}
       >
         <div className="mx-auto" style={{ maxWidth: '1100px' }}>
-
-          {/* Section header */}
-          <div className="mb-14 text-center">
-            <p className="mb-3 text-[0.72rem] font-bold uppercase tracking-[0.12em]" style={{ color: '#C8790A' }}>
-              Why PawConnect
-            </p>
-            <h2 className="mb-4 font-fraunces text-[2.4rem] font-black leading-[1.15] text-ink">
-              Everything your dog deserves,{' '}
-              <em style={{ fontStyle: 'italic', color: '#C8790A' }}>in one place</em>
-            </h2>
-            <p className="mx-auto max-w-[480px] text-[0.9rem] leading-[1.7] text-muted">
-              From finding the right vet to connecting with dog lovers near you — PawConnect handles it all so you can focus on your pup.
-            </p>
-          </div>
 
           {/* Cards */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
