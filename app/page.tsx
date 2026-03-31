@@ -47,17 +47,6 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* WHAT WE OFFER heading — above the white wave */}
-          <div className="absolute bottom-20 left-0 right-0 z-20 text-center">
-            <p className="mb-0.5 text-[0.65rem] font-bold uppercase tracking-[0.12em]" style={{ color: '#ff5722' }}>
-              WHAT WE OFFER
-            </p>
-            <p className="font-fraunces text-[1.1rem] font-black leading-[1.2] text-ink">
-              Everything your dog deserves,{' '}
-              <em style={{ fontStyle: 'italic', color: '#ff5722' }}>in one place</em>
-            </p>
-          </div>
-
           {/* Bottom wave */}
           <div className="absolute bottom-0 left-0 right-0 z-30 h-16 rounded-t-[50%] bg-[#FAFAF7]" />
 
@@ -69,6 +58,17 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* WHAT WE OFFER — below hero */}
+      <div className="bg-[#FAFAF7] pb-8 pt-6 text-center">
+        <p className="mb-1 text-[0.7rem] font-bold uppercase tracking-[0.12em]" style={{ color: '#ff5722' }}>
+          WHAT WE OFFER
+        </p>
+        <p className="font-fraunces text-[1.4rem] font-black leading-[1.2] text-ink">
+          Everything your dog deserves,{' '}
+          <em style={{ fontStyle: 'italic', color: '#ff5722' }}>in one place</em>
+        </p>
+      </div>
 
       {/* ── FEATURES SECTION ── */}
       <section
