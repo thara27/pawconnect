@@ -1,11 +1,25 @@
 ﻿import Link from "next/link";
 
+import { createClient } from "@/lib/supabase/server";
 import { getMyBookings } from "@/lib/actions/bookings";
 import { searchProviders } from "@/lib/actions/providers";
 import ProviderCard from "@/app/components/providers/ProviderCard";
 
+function getGreeting() {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  return "Good evening";
+}
+
 export default async function PetOwnerDashboardPage() {
   const todayISO = new Date().toISOString().slice(0, 10);
+
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const rawName: string = user?.user_metadata?.full_name ?? user?.user_metadata?.name ?? user?.email ?? "";
+  const firstName = rawName.split(/[\s@]/)[0] ?? "there";
+  const greeting = getGreeting();
 
   // Fetch a few available providers for the featured row; fail silently
   let featuredProviders: Awaited<ReturnType<typeof searchProviders>> = [];
@@ -50,10 +64,14 @@ export default async function PetOwnerDashboardPage() {
               {nearbyAvailableCount} providers available near you
             </p>
             <h1 className="heading-lg">
-              Welcome back, <span className="italic">dog parent</span>
+              {greeting}, <span className="italic">{firstName}</span> 🐾
             </h1>
             <p className="mt-2 text-muted" style={{ maxWidth: "440px" }}>
-              Perfect weather for an evening walk. Want to schedule grooming and a quick vet health check this week?
+              {upcomingBookings.length > 0
+                ? `You have ${upcomingBookings.length} upcoming booking${upcomingBookings.length !== 1 ? "s" : ""}. Need to book anything else for your pup?`
+                : nearbyAvailableCount > 0
+                  ? `${nearbyAvailableCount} providers are available near you right now. Find the right care for your dog.`
+                  : "Explore pet care services, manage your dogs, and connect with your community."}
             </p>
 
             <div className="mt-5 flex flex-wrap gap-3">

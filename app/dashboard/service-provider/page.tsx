@@ -32,10 +32,18 @@ export default async function ServiceProviderDashboardPage() {
               {pendingCount} new requests waiting
             </p>
             <h1 className="heading-lg">
-              Grow faster with <span className="italic">PawConnect</span>
+              {profile?.business_name ? (
+                <>Welcome, <span className="italic">{profile.business_name}</span> 👋</>
+              ) : (
+                <>Grow faster with <span className="italic">PawConnect</span></>
+              )}
             </h1>
             <p className="mt-2 text-muted" style={{ maxWidth: "440px" }}>
-              Optimise your schedule, confirm requests quickly, and convert more repeat bookings in your city.
+              {pendingCount > 0
+                ? `You have ${pendingCount} pending request${pendingCount !== 1 ? "s" : ""} waiting for your response.`
+                : todaysConfirmedCount > 0
+                  ? `${todaysConfirmedCount} confirmed booking${todaysConfirmedCount !== 1 ? "s" : ""} today. Have a great day!`
+                  : "Optimise your schedule, confirm requests quickly, and build your reputation."}
             </p>
 
             <div className="mt-5 flex flex-wrap gap-3">
