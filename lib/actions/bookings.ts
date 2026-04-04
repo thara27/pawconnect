@@ -652,6 +652,5 @@ export async function markNotificationsRead(): Promise<{ success: boolean; error
     return { success: false, error: error.message };
   }
 
-  revalidatePath("/dashboard");
   return { success: true, error: null };
 }

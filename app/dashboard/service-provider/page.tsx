@@ -79,7 +79,7 @@ export default async function ServiceProviderDashboardPage() {
               <h2 className="mt-2 text-2xl font-black">Emergency blood donor request nearby</h2>
               <p className="mt-1 text-sm text-white/90">Boost your visibility now and help nearby pet parents in critical need.</p>
             </div>
-            <button className="btn btn-primary rounded-full">Respond now</button>
+            <Link href="/coming-soon" className="btn btn-primary rounded-full">Respond now</Link>
           </div>
         </article>
 

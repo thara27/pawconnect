@@ -111,7 +111,7 @@ export default async function PetOwnerDashboardPage() {
               <h2 className="mt-2 text-2xl font-black">Need blood donor support?</h2>
               <p className="mt-1 text-sm text-white/90">Activate emergency visibility in your city and notify matching donor groups instantly.</p>
             </div>
-            <button className="btn btn-primary rounded-full">Request help</button>
+            <Link href="/coming-soon" className="btn btn-primary rounded-full">Request help</Link>
           </div>
         </article>
 

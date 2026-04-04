@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import NewsletterSection from "@/app/components/NewsletterSection";
+
 export default async function Home() {
 
   return (
@@ -211,6 +213,8 @@ export default async function Home() {
 
         </div>
       </section>
+
+      <NewsletterSection />
 
     </main>
   );

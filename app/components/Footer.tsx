@@ -1,6 +1,57 @@
 "use client";
 
+import { useState, useTransition } from "react";
 import Link from "next/link";
+
+import { subscribeToNewsletter } from "@/lib/actions/newsletter";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function FooterNewsletter() {
+  const [email, setEmail]     = useState("");
+  const [done, setDone]       = useState(false);
+  const [isPending, start]    = useTransition();
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!EMAIL_RE.test(email.trim())) return;
+    start(async () => {
+      const res = await subscribeToNewsletter(email);
+      if (res.success) { setDone(true); setEmail(""); }
+    });
+  }
+
+  if (done) {
+    return <p className="text-[0.8rem] font-semibold text-[#E8920A]">Thanks for joining PawConnect 🐾</p>;
+  }
+
+  return (
+    <form onSubmit={handleSubmit} noValidate>
+      <div className="flex gap-2">
+        <label htmlFor="footer-email" className="sr-only">Email address</label>
+        <input
+          id="footer-email"
+          type="email"
+          autoComplete="email"
+          placeholder="your@email.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={isPending}
+          className="min-w-0 flex-1 rounded-lg px-3 py-2 text-[0.8rem] text-white outline-none"
+          style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.14)" }}
+        />
+        <button
+          type="submit"
+          disabled={isPending}
+          className="rounded-lg px-3 py-2 text-[0.8rem] font-semibold text-white disabled:opacity-60"
+          style={{ background: "#E8920A", cursor: "pointer", whiteSpace: "nowrap" }}
+        >
+          {isPending ? "…" : "Join"}
+        </button>
+      </div>
+    </form>
+  );
+}
 
 export default function Footer() {
   return (
@@ -46,7 +97,7 @@ export default function Footer() {
                 { label: "Find services",  href: "/search"    },
                 { label: "Dog breeds",     href: "/breeds"    },
                 { label: "Community",      href: "/community" },
-                { label: "Blood donation", href: "/search"    },
+                { label: "Blood donation", href: "/coming-soon" },
                 { label: "AI vet chat",    href: "#"          },
               ].map((link) => (
                 <li key={link.label}>
@@ -83,19 +134,7 @@ export default function Footer() {
             <div className="rounded-[12px] p-5" style={{ background: "rgba(232,146,10,0.10)", border: "1px solid rgba(232,146,10,0.22)" }}>
               <p className="mb-1 font-fraunces text-[0.95rem] font-bold text-white">Dog care tips, weekly</p>
               <p className="mb-4 text-[0.78rem] leading-[1.5]" style={{ color: "rgba(255,255,255,0.50)" }}>Breed tips, health reminders &amp; events</p>
-              <div className="flex gap-2">
-                <input
-                  suppressHydrationWarning
-                  type="email"
-                  autoComplete="email"
-                  placeholder="your@email.com"
-                  className="min-w-0 flex-1 rounded-lg px-3 py-2 text-[0.8rem] text-white outline-none"
-                  style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.14)" }}
-                />
-                <button type="button" className="rounded-lg px-3 py-2 text-[0.8rem] font-semibold text-white" style={{ background: "#E8920A", cursor: "pointer", whiteSpace: "nowrap" }}>
-                  Join
-                </button>
-              </div>
+              <FooterNewsletter />
             </div>
           </div>
         </div>
