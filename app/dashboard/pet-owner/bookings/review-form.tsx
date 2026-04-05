@@ -3,8 +3,10 @@
 import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 
-import { createReview, initialReviewState } from "@/lib/actions/reviews";
+import { createReview } from "@/lib/actions/reviews";
 import type { ReviewState } from "@/lib/actions/reviews";
+
+const initialReviewState: ReviewState = { success: false, error: null };
 
 // ── Star picker ──────────────────────────────────────────────────────────────
 

@@ -10,9 +10,6 @@ export type ReviewState = {
   alreadyReviewed?: boolean;
 };
 
-const INITIAL_STATE: ReviewState = { success: false, error: null };
-export { INITIAL_STATE as initialReviewState };
-
 export async function createReview(
   _prevState: ReviewState,
   formData: FormData,
