@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { PetDeleteButton } from "@/app/dashboard/pet-owner/pets/pet-delete-button";
 import { getPets } from "@/lib/actions/pets";
+import TrackEvent from "@/app/components/ui/TrackEvent";
 
 function petGradient(breed: string | null) {
   const value = (breed ?? "").toLowerCase();
@@ -51,9 +52,12 @@ export default async function PetProfilesPage({
         </div>
 
         {status === "created" ? (
-          <p className="alert alert-success mt-6">
-            Pet profile created successfully.
-          </p>
+          <>
+            <TrackEvent event="pet_added" />
+            <p className="alert alert-success mt-6">
+              Pet profile created successfully.
+            </p>
+          </>
         ) : null}
 
         {status === "deleted" ? (
@@ -63,10 +67,21 @@ export default async function PetProfilesPage({
         ) : null}
 
         {pets.length === 0 ? (
-          <div className="empty-state card mt-6">
-            <div className="empty-state-icon">🐾</div>
-            <h2 className="empty-state-title">No pets yet</h2>
-            <p className="empty-state-desc">Add your first pet profile to get started.</p>
+          <div className="mt-6 rounded-2xl border-2 border-dashed border-border bg-white px-6 py-12 text-center">
+            <p className="text-5xl">🐶</p>
+            <h2 className="mt-3 font-fraunces text-xl font-black text-ink">Add your first dog</h2>
+            <p className="mt-1 text-sm text-muted">
+              Create a profile for your pup — breed, age, vaccination status and more.
+            </p>
+            <Link
+              href="/dashboard/pet-owner/pets/new"
+              className="btn btn-primary mt-5"
+            >
+              Add my dog 🐾
+            </Link>
+            <p className="mt-4 text-xs text-muted">
+              Providers use your dog&apos;s profile to tailor their service.
+            </p>
           </div>
         ) : (
           <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

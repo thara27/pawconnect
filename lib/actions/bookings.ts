@@ -598,6 +598,36 @@ export async function cancelBooking(
   return { success: true, error: null };
 }
 
+export async function markNotificationRead(
+  id: string,
+): Promise<{ success: boolean; error: string | null }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError) {
+    return { success: false, error: "Authentication error." };
+  }
+
+  if (!user) {
+    return { success: false, error: "You must be logged in." };
+  }
+
+  const { error } = await supabase
+    .from("notifications")
+    .update({ is_read: true })
+    .eq("id", id)
+    .eq("user_id", user.id); // RLS + explicit ownership check
+
+  if (error) {
+    return { success: false, error: "Could not mark notification as read." };
+  }
+
+  return { success: true, error: null };
+}
+
 export async function getNotifications(): Promise<Notification[]> {
   const supabase = await createClient();
   const {

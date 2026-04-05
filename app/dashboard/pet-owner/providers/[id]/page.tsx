@@ -4,69 +4,7 @@ import { notFound } from "next/navigation";
 
 import { getProviderById } from "@/lib/actions/providers";
 import { SERVICE_TYPES, DAYS_OF_WEEK, PRICE_UNITS } from "@/lib/types/provider";
-import type { ProviderReview } from "@/lib/types/provider";
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-function StarRating({ rating, large = false }: { rating: number; large?: boolean }) {
-  const filled = Math.round(rating);
-  const size = large ? "h-5 w-5" : "h-4 w-4";
-  return (
-    <div className="flex items-center gap-0.5" aria-label={`${rating} out of 5 stars`}>
-      {Array.from({ length: 5 }, (_, i) => (
-        <svg
-          key={i}
-          className={`${size} ${i < filled ? "text-brand" : "text-border"}`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      ))}
-    </div>
-  );
-}
-
-function InitialsAvatar({ seed, sizeClass }: { seed: string; sizeClass: string }) {
-  // Derive two initials from a UUID (use hex chars at positions 0 and 2)
-  const a = seed[0]?.toUpperCase() ?? "U";
-  const b = seed[2]?.toUpperCase() ?? "S";
-  const initials = `${a}${b}`;
-  return (
-    <div
-      className={`flex items-center justify-center rounded-full bg-bg font-semibold text-muted ${sizeClass}`}
-    >
-      {initials}
-    </div>
-  );
-}
-
-function ReviewCard({ review }: { review: ProviderReview }) {
-  const date = new Date(review.created_at).toLocaleDateString("en-IN", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-  return (
-    <div className="rounded-xl border border-border bg-bg p-4">
-      <div className="flex items-start gap-3">
-        <InitialsAvatar seed={review.reviewer_id} sizeClass="h-9 w-9 flex-shrink-0 text-sm" />
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between gap-2">
-            <StarRating rating={review.rating} />
-            <time className="text-xs text-muted" dateTime={review.created_at}>
-              {date}
-            </time>
-          </div>
-          {review.comment && (
-            <p className="mt-1.5 text-sm text-ink">{review.comment}</p>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
+import ProviderReviewsSection from "@/app/components/providers/ProviderReviewsSection";
 
 // ---------------------------------------------------------------------------
 // Page
@@ -162,7 +100,13 @@ export default async function ProviderDetailPage({
               </div>
 
               <div className="mt-2 flex items-center gap-2">
-                <StarRating rating={provider.avg_rating} large />
+                <div className="flex items-center gap-0.5" aria-label={`${provider.avg_rating} out of 5 stars`}>
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <svg key={i} className={`h-5 w-5 ${i < Math.round(provider.avg_rating) ? "text-brand" : "text-border"}`} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
                 <span className="text-sm text-muted">
                   {provider.avg_rating > 0
                     ? provider.avg_rating.toFixed(1)
@@ -300,27 +244,11 @@ export default async function ProviderDetailPage({
         {/* ---------------------------------------------------------------- */}
         {/* REVIEWS                                                            */}
         {/* ---------------------------------------------------------------- */}
-        <section className="card">
-          <h2 className="mb-4 font-semibold text-ink">
-            Reviews
-            {provider.review_count > 0 && (
-              <span className="ml-2 text-sm font-normal text-muted">
-                ({provider.review_count})
-              </span>
-            )}
-          </h2>
-          {reviews.length > 0 ? (
-            <div className="space-y-3">
-              {reviews.map((review) => (
-                <ReviewCard key={review.id} review={review} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm italic text-muted">
-              No reviews yet. Be the first to leave one!
-            </p>
-          )}
-        </section>
+        <ProviderReviewsSection
+          reviews={reviews}
+          avgRating={provider.avg_rating}
+          reviewCount={provider.review_count}
+        />
       </div>
 
       {/* ------------------------------------------------------------------ */}

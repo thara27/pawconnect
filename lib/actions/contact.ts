@@ -1,6 +1,6 @@
 "use server";
 
-import AWS from "aws-sdk";
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { createClient } from "@/lib/supabase/server";
 
 export interface ContactFormData {
@@ -11,15 +11,40 @@ export interface ContactFormData {
 }
 
 export async function submitContactForm(data: ContactFormData) {
+  // Server-side validation — client-side checks are bypassable
+  const name = (data.name ?? "").trim();
+  const email = (data.email ?? "").trim();
+  const subject = (data.subject ?? "").trim();
+  const message = (data.message ?? "").trim();
+
+  if (!name || !email || !subject || !message) {
+    return { success: false, error: "All fields are required." };
+  }
+  if (name.length > 100) {
+    return { success: false, error: "Name must be 100 characters or fewer." };
+  }
+  if (subject.length > 200) {
+    return { success: false, error: "Subject must be 200 characters or fewer." };
+  }
+  if (message.length > 5000) {
+    return { success: false, error: "Message must be 5000 characters or fewer." };
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return { success: false, error: "Please enter a valid email address." };
+  }
+
+  const sanitised: ContactFormData = { name, email, subject, message };
+
   try {
     // Try saving to Supabase — non-blocking, form still succeeds if table missing
     try {
       const supabase = await createClient();
       const { error: saveError } = await supabase.from("contact_messages").insert({
-        name: data.name,
-        email: data.email,
-        subject: data.subject,
-        message: data.message,
+        name: sanitised.name,
+        email: sanitised.email,
+        subject: sanitised.subject,
+        message: sanitised.message,
         created_at: new Date().toISOString(),
       });
 
@@ -32,7 +57,7 @@ export async function submitContactForm(data: ContactFormData) {
     }
 
     // Send email notification (always attempt, independent of DB)
-    const mailResult = await sendContactEmail(data);
+    const mailResult = await sendContactEmail(sanitised);
 
     if (!mailResult.success) {
       return {
@@ -58,7 +83,10 @@ export async function submitContactForm(data: ContactFormData) {
 async function sendContactEmail(data: ContactFormData) {
   const recipientEmail = process.env.CONTACT_FORM_EMAIL;
   const fromEmail = process.env.CONTACT_FORM_FROM_EMAIL || recipientEmail;
-  const awsRegion = process.env.AWS_SES_REGION || "us-east-1";
+  // GHSA-j965-2qgj-vjmq: validate region against allowlist before passing to SDK
+  const VALID_AWS_REGIONS = /^[a-z]{2}-[a-z]+-\d+$/;
+  const rawRegion = process.env.AWS_SES_REGION ?? "us-east-1";
+  const awsRegion = VALID_AWS_REGIONS.test(rawRegion) ? rawRegion : "us-east-1";
   const awsAccessKey = process.env.AWS_ACCESS_KEY_ID;
   const awsSecretKey = process.env.AWS_SECRET_ACCESS_KEY;
 
@@ -70,7 +98,7 @@ async function sendContactEmail(data: ContactFormData) {
   try {
     // In Amplify, IAM role credentials are injected automatically.
     // For local dev, explicit keys from .env.local can be used.
-    const sesConfig: AWS.SES.ClientConfiguration = { region: awsRegion };
+    const sesConfig: ConstructorParameters<typeof SESClient>[0] = { region: awsRegion };
     if (awsAccessKey && awsSecretKey) {
       sesConfig.credentials = {
         accessKeyId: awsAccessKey,
@@ -78,7 +106,7 @@ async function sendContactEmail(data: ContactFormData) {
       };
     }
 
-    const ses = new AWS.SES(sesConfig);
+    const ses = new SESClient(sesConfig);
 
     const htmlBody = `
       <h2>New Contact Form Submission</h2>
@@ -101,8 +129,8 @@ async function sendContactEmail(data: ContactFormData) {
       `Submitted at: ${new Date().toISOString()}`,
     ].join("\n");
 
-    await ses
-      .sendEmail({
+    await ses.send(
+      new SendEmailCommand({
         Source: fromEmail!,
         Destination: {
           ToAddresses: [recipientEmail],
@@ -124,8 +152,8 @@ async function sendContactEmail(data: ContactFormData) {
           },
         },
         ReplyToAddresses: [data.email],
-      })
-      .promise();
+      }),
+    );
 
     console.log(`Contact form email sent to ${recipientEmail} from ${fromEmail}`);
     return { success: true };

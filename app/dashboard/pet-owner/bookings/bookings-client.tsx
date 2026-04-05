@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
 
 import { cancelBooking } from "@/lib/actions/bookings";
+import ReviewForm from "@/app/dashboard/pet-owner/bookings/review-form";
 import type { BookingStatus, BookingWithDetails } from "@/lib/types/booking";
 
 type Tab = "all" | BookingStatus;
@@ -34,13 +35,21 @@ function statusText(status: BookingStatus): string {
 type Props = {
   bookings: BookingWithDetails[];
   success: boolean;
+  reviewedProviderIds: string[];
 };
 
-export default function PetOwnerBookingsClient({ bookings, success }: Props) {
+export default function PetOwnerBookingsClient({ bookings, success, reviewedProviderIds }: Props) {
   const [tab, setTab] = useState<Tab>("all");
   const [activeBookings, setActiveBookings] = useState(bookings);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [reviewedProviders, setReviewedProviders] = useState<Set<string>>(
+    () => new Set(reviewedProviderIds),
+  );
+
+  function handleReviewSubmitted(providerId: string) {
+    setReviewedProviders((prev) => new Set([...prev, providerId]));
+  }
 
   const filtered = useMemo(() => {
     if (tab === "all") return activeBookings;
@@ -109,12 +118,40 @@ export default function PetOwnerBookingsClient({ bookings, success }: Props) {
         </div>
 
         {filtered.length === 0 ? (
-          <div className="empty-state card mt-6">
-            <p className="text-muted">No {tab === "all" ? "" : tab} bookings yet</p>
-            {tab === "all" && (
-              <Link href="/search" className="btn btn-primary btn-sm mt-3">
-                Find a service
-              </Link>
+          <div className="mt-6 rounded-2xl border-2 border-dashed border-border bg-white px-6 py-12 text-center">
+            {tab === "all" ? (
+              <>
+                <p className="text-5xl">📅</p>
+                <h2 className="mt-3 font-fraunces text-xl font-black text-ink">Book your first service</h2>
+                <p className="mt-1 text-sm text-muted">
+                  Find trusted vets, groomers, and trainers near you.
+                </p>
+                <Link
+                  href="/dashboard/pet-owner/search"
+                  className="btn btn-primary mt-5"
+                >
+                  Search providers →
+                </Link>
+                <div className="mx-auto mt-6 grid max-w-xs grid-cols-3 gap-3 text-xs text-muted">
+                  <div className="rounded-xl border border-border p-2">
+                    <p className="text-lg">🩺</p>
+                    <p className="mt-1 font-medium">Vet visits</p>
+                  </div>
+                  <div className="rounded-xl border border-border p-2">
+                    <p className="text-lg">✂️</p>
+                    <p className="mt-1 font-medium">Grooming</p>
+                  </div>
+                  <div className="rounded-xl border border-border p-2">
+                    <p className="text-lg">🐕</p>
+                    <p className="mt-1 font-medium">Dog walking</p>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="text-4xl">🔍</p>
+                <p className="mt-3 text-sm font-medium text-ink">No {tab} bookings yet</p>
+              </>
             )}
           </div>
         ) : (
@@ -169,6 +206,18 @@ export default function PetOwnerBookingsClient({ bookings, success }: Props) {
                       </button>
                     </div>
                   )}
+
+                  {booking.status === "completed" &&
+                    !reviewedProviders.has(booking.provider_id) && (
+                      <div className="mt-3">
+                        <ReviewForm
+                          bookingId={booking.id}
+                          providerId={booking.provider_id}
+                          providerName={booking.provider.business_name}
+                          onSuccess={handleReviewSubmitted}
+                        />
+                      </div>
+                    )}
                 </article>
               );
             })}

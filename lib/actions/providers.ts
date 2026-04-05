@@ -571,7 +571,7 @@ export async function getProviderById(id: string): Promise<{
       .select("*")
       .eq("provider_id", id)
       .order("created_at", { ascending: false })
-      .limit(5),
+      .limit(50),
   ]);
 
   if (availabilityResult.error) {
@@ -582,6 +582,29 @@ export async function getProviderById(id: string): Promise<{
     throw new Error(reviewsResult.error.message);
   }
 
+  const rawReviews = (reviewsResult.data as Omit<ProviderReview, "reviewer_display_name">[] | null) ?? [];
+
+  // Fetch reviewer display names in a single follow-up query
+  let reviewerNames: Map<string, string | null> = new Map();
+  if (rawReviews.length > 0) {
+    const reviewerIds = rawReviews.map((r) => r.reviewer_id);
+    const { data: profiles } = await supabase
+      .from("pet_owner_profiles")
+      .select("user_id, display_name")
+      .in("user_id", reviewerIds);
+    if (profiles) {
+      for (const p of profiles) {
+        reviewerNames.set(p.user_id as string, (p.display_name as string | null) ?? null);
+      }
+    }
+  }
+
+  const reviews: ProviderReview[] = rawReviews.map((r) => ({
+    ...r,
+    rating: r.rating as ProviderReview["rating"],
+    reviewer_display_name: reviewerNames.get(r.reviewer_id) ?? null,
+  }));
+
   const provider: ProviderSearchResult = {
     ...profileData,
     avg_rating: Number(profileData.avg_rating ?? 0),
@@ -591,6 +614,6 @@ export async function getProviderById(id: string): Promise<{
 
   return {
     provider,
-    reviews: (reviewsResult.data as ProviderReview[] | null) ?? [],
+    reviews,
   };
 }

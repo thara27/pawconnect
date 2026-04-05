@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 
 import { createBooking, getAvailableSlots } from "@/lib/actions/bookings";
 import type { TimeSlot } from "@/lib/types/booking";
+import { Analytics } from "@/lib/analytics";
 
 type PetOption = {
   id: string;
@@ -151,6 +152,7 @@ export default function BookingWizard({ provider, pets }: BookingWizardProps) {
         return;
       }
 
+      Analytics.bookingCreated(provider.id, provider.service_type);
       router.push("/dashboard/pet-owner/bookings?success=true");
     });
   }

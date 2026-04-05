@@ -68,6 +68,7 @@ export type ProviderReview = {
   rating: 1 | 2 | 3 | 4 | 5;
   comment: string | null;
   created_at: string;
+  reviewer_display_name: string | null;
 };
 
 export type ProviderSearchResult = ProviderProfile & {

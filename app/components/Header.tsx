@@ -9,6 +9,7 @@ export async function Header() {
 
   const isLoggedIn = !!session;
   const userRole = (session?.user?.user_metadata?.user_type as string | undefined) || null;
+  const userId = session?.user?.id ?? null;
 
-  return <NavBar isLoggedIn={isLoggedIn} userRole={userRole} />;
+  return <NavBar isLoggedIn={isLoggedIn} userRole={userRole} userId={userId} />;
 }

@@ -104,6 +104,17 @@ export default async function PetOwnerDashboardPage() {
           </div>
         </div>
 
+        {/* Trust signals */}
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 rounded-2xl border border-border bg-white px-5 py-4 text-xs font-semibold text-muted">
+          <span className="flex items-center gap-1.5"><span className="text-base">🐾</span> Trusted by 10,000+ dog parents across India</span>
+          <span className="hidden text-border sm:inline">|</span>
+          <span className="flex items-center gap-1.5"><span className="text-base">✅</span> Verified providers only</span>
+          <span className="hidden text-border sm:inline">|</span>
+          <span className="flex items-center gap-1.5"><span className="text-base">🔒</span> Secure &amp; private</span>
+          <span className="hidden text-border sm:inline">|</span>
+          <span className="flex items-center gap-1.5"><span className="text-base">🇮🇳</span> Made in India</span>
+        </div>
+
         <article className="mt-5 rounded-[14px] bg-gradient-to-br from-[#FF1744] to-[#FF5252] p-5 text-white shadow-[0_12px_28px_rgba(255,23,68,0.35)]">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>

@@ -1,4 +1,4 @@
-import AuthPromptButton from "@/app/components/ui/AuthPromptButton";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
 type CommunityPost = {
@@ -57,10 +57,12 @@ export default async function CommunityPage() {
         <div className="mx-auto w-full max-w-4xl">
         <div className="section-header mt-6">
           <h1 className="heading-md">Community Feed</h1>
-          <AuthPromptButton
-            triggerText="Post"
-            promptText="Login or sign up to publish your post"
-          />
+          <Link
+            href="/community/new"
+            className="btn btn-primary btn-sm"
+          >
+            Post
+          </Link>
         </div>
 
         <div className="mt-6 space-y-4">
@@ -89,11 +91,12 @@ export default async function CommunityPage() {
                 <p>
                   by {authorFirstName(post.author_id)} · {new Date(post.created_at).toLocaleDateString("en-IN")}
                 </p>
-                <AuthPromptButton
-                  triggerText="Reply"
-                  promptText="Login or sign up to reply to this post"
-                  variant="ghost"
-                />
+                <Link
+                  href="/coming-soon"
+                  className="btn btn-outline btn-sm text-xs"
+                >
+                  Reply
+                </Link>
               </div>
             </article>
           ))}

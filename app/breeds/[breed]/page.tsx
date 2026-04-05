@@ -59,6 +59,13 @@ export default async function BreedProfilePage({
             </span>
           </div>
           <p className="mt-3 text-sm text-muted">{profile.summary}</p>
+          {profile.temperament.length > 0 && (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {profile.temperament.map((trait) => (
+                <span key={trait} className="badge badge-sage">{trait}</span>
+              ))}
+            </div>
+          )}
         </section>
 
         <section className="card">

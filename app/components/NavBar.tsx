@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 import { createClient } from "@/lib/supabase/client";
+import NotificationsBell from "@/app/components/ui/NotificationsBell";
 
 type UserRole = "pet_owner" | "service_provider" | null;
 
@@ -85,9 +86,11 @@ function getNavItems(isLoggedIn: boolean, userRole: UserRole): NavItem[] {
 export function NavBar({
   isLoggedIn,
   userRole,
+  userId,
 }: {
   isLoggedIn: boolean;
   userRole: string | null;
+  userId: string | null;
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -95,7 +98,6 @@ export function NavBar({
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
 
   const normalizedRole: UserRole =
     userRole === "pet_owner" || userRole === "service_provider"
@@ -152,34 +154,6 @@ export function NavBar({
     };
   }, [menuOpen]);
 
-  useEffect(() => {
-    const loadUnreadCount = async () => {
-      if (!isLoggedIn) {
-        setUnreadCount(0);
-        return;
-      }
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        setUnreadCount(0);
-        return;
-      }
-
-      const { count } = await supabase
-        .from("notifications")
-        .select("*", { count: "exact", head: true })
-        .eq("user_id", user.id)
-        .eq("is_read", false);
-
-      setUnreadCount(count ?? 0);
-    };
-
-    void loadUnreadCount();
-  }, [isLoggedIn, pathname, supabase]);
-
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     setProfileOpen(false);
@@ -211,16 +185,7 @@ export function NavBar({
         <div className="hidden items-center gap-3 md:flex">
           {isLoggedIn ? (
             <>
-              <Link
-                href={notificationsHref}
-                className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-lg transition hover:bg-bg"
-                aria-label="Notifications"
-              >
-                <span aria-hidden="true">🔔</span>
-                {unreadCount > 0 ? (
-                  <span className="absolute right-1 top-1 inline-flex h-2.5 w-2.5 rounded-full bg-red-500" />
-                ) : null}
-              </Link>
+              <NotificationsBell userId={userId} />
 
               <div className="relative">
                 <button
@@ -274,16 +239,7 @@ export function NavBar({
 
           <div className="flex items-center gap-2 md:hidden">
             {isLoggedIn ? (
-              <Link
-                href={notificationsHref}
-                className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-lg transition hover:bg-bg"
-                aria-label="Notifications"
-              >
-                <span aria-hidden="true">🔔</span>
-                {unreadCount > 0 ? (
-                  <span className="absolute right-1 top-1 inline-flex h-2.5 w-2.5 rounded-full bg-red-500" />
-                ) : null}
-              </Link>
+              <NotificationsBell userId={userId} />
             ) : null}
 
             <button
@@ -355,9 +311,6 @@ export function NavBar({
                     className="flex min-h-12 items-center rounded-xl px-4 text-base font-semibold text-muted hover:bg-brand-light hover:text-brand"
                   >
                     Notifications
-                    {unreadCount > 0 ? (
-                      <span className="ml-2 inline-flex h-2.5 w-2.5 rounded-full bg-red-500" />
-                    ) : null}
                   </Link>
                   <Link
                     href={profileHref}

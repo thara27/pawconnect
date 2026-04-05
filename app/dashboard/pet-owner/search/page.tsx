@@ -7,6 +7,7 @@ import { searchProviders } from "@/lib/actions/providers";
 import { SERVICE_TYPES } from "@/lib/types/provider";
 import type { ProviderSearchResult, SearchFilters } from "@/lib/types/provider";
 import ProviderCard from "@/app/components/providers/ProviderCard";
+import { Analytics } from "@/lib/analytics";
 
 // ---------------------------------------------------------------------------
 // Skeleton card while loading
@@ -78,6 +79,7 @@ function SearchContent() {
     setMinRating(searchParams.get("rating") ?? "");
 
     fetchProviders(filters);
+    Analytics.pageView("/dashboard/pet-owner/search");
   }, [searchParams, fetchProviders]);
 
   function handleSearch(e: React.FormEvent) {

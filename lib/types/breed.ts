@@ -3,6 +3,7 @@ export type BreedProfile = {
   breed_slug: string;
   size: "small" | "medium" | "large" | "giant" | string;
   origin: string;
+  temperament: string[];
   energy_level: number;
   grooming_needs: number;
   training_difficulty: number;
@@ -14,6 +15,7 @@ export type BreedProfile = {
   feeding_guide: string;
   fun_fact: string;
   summary: string;
+  generated_by_ai?: boolean;
 };
 
 export const PLACEHOLDER_BREEDS: BreedProfile[] = [
