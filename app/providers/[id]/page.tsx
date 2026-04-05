@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import ProviderReviewsSection from "@/app/components/providers/ProviderReviewsSection";
+import ShareButton from "@/app/components/ShareButton";
 import SignupNudge from "@/app/components/ui/SignupNudge";
 import { getProviderById } from "@/lib/actions/providers";
 import { DAYS_OF_WEEK, PRICE_UNITS, SERVICE_TYPES } from "@/lib/types/provider";
@@ -105,6 +106,13 @@ export default async function PublicProviderDetailPage({
                   {provider.website}
                 </a>
               )}
+              <div className="mt-3">
+                <ShareButton
+                  text={`Check out ${provider.business_name} on PawConnect 🐾 — ${serviceLabel} in ${provider.city}`}
+                  url={`https://pawconnect.in/providers/${provider.id}`}
+                  label="Share on WhatsApp"
+                />
+              </div>
             </div>
           </div>
         </section>

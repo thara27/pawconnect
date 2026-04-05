@@ -30,5 +30,5 @@ export async function setUserTypeAction(userType: UserType) {
     return { error: error.message };
   }
 
-  redirect("/dashboard");
+  redirect("/dashboard/pet-owner?welcome=1");
 }

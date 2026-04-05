@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { Notification } from "@/lib/types/booking";
+import EmptyState from "@/app/components/ui/EmptyState";
 
 function iconForType(type: string): string {
   if (type === "booking_request") return "📝";
@@ -48,11 +49,11 @@ export default function NotificationsClient({ notifications, backHref }: Props) 
         </div>
 
         {notifications.length === 0 ? (
-          <div className="rounded-2xl border border-border bg-white p-10 text-center">
-            <p className="text-4xl">🔔</p>
-            <p className="mt-3 font-medium text-ink">All caught up!</p>
-            <p className="mt-1 text-sm text-muted">No notifications yet. They&apos;ll show up here when you get bookings.</p>
-          </div>
+          <EmptyState
+            emoji="🔔"
+            title="All caught up!"
+            description="No notifications yet. They'll show up here when you get bookings or updates."
+          />
         ) : (
           <ul className="space-y-3">
             {notifications.map((n) => (

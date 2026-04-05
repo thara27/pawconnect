@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getProviderById } from "@/lib/actions/providers";
 import { SERVICE_TYPES, DAYS_OF_WEEK, PRICE_UNITS } from "@/lib/types/provider";
 import ProviderReviewsSection from "@/app/components/providers/ProviderReviewsSection";
+import ShareButton from "@/app/components/ShareButton";
 
 // ---------------------------------------------------------------------------
 // Page
@@ -150,6 +151,13 @@ export default async function ProviderDetailPage({
                 )}
               </ul>
             </div>
+          </div>
+          <div className="mt-4">
+            <ShareButton
+              text={`Check out ${provider.business_name} on PawConnect 🐾 — ${serviceLabel} in ${provider.city}`}
+              url={`https://pawconnect.in/providers/${provider.id}`}
+              label="Share on WhatsApp"
+            />
           </div>
         </section>
 
