@@ -28,7 +28,7 @@ export default async function Home() {
           <div className="absolute inset-0 z-10 hidden bg-gradient-to-l from-[#FFE082]/25 to-transparent sm:block" />
 
           {/* Hero text — sits in lower-third on mobile (pb-36 clears wave+dogs), centred on desktop */}
-          <div className="relative z-20 flex h-full max-w-lg flex-col justify-end pb-36 px-8 sm:justify-center sm:pb-0 sm:py-10">
+          <div className="relative z-20 flex h-full max-w-lg flex-col justify-end pb-24 px-8 sm:justify-center sm:pb-0 sm:py-10">
             <span className="inline-flex w-fit items-center rounded-full border border-[#E7C56F] bg-white px-4 py-1.5 text-xs font-semibold text-[#8B5E00] shadow-sm">
               🐾 India&apos;s #1 Dog Community
             </span>
@@ -41,7 +41,7 @@ export default async function Home() {
               Connect with dog owners, find trusted vets, book grooming and training &mdash; all in one place. Powered by AI to understand your dog&apos;s unique needs.
             </p>
 
-            <div className="mt-10 flex flex-wrap gap-3 sm:mt-6">
+            <div className="mt-20 flex flex-wrap gap-3 sm:mt-6">
               <Link href="/search" className="btn btn-primary">
                 Explore Services
               </Link>
