@@ -16,6 +16,7 @@ function normalizeBreedRow(row: Partial<BreedProfile>): BreedProfile {
         .replace(/\s+/g, "-"),
     size: row.size ?? "medium",
     origin: row.origin ?? "Unknown",
+    temperament: row.temperament ?? [],
     energy_level: row.energy_level ?? 3,
     grooming_needs: row.grooming_needs ?? 3,
     training_difficulty: row.training_difficulty ?? 3,
