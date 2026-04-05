@@ -15,18 +15,20 @@ export default async function Home() {
               src="/images/dogbg.png"
               alt="Dogs playing in park"
               fill
-              className="object-cover object-center"
+              className="object-cover object-center object-top sm:object-center"
               priority
             />
           </div>
 
-          {/* Gradient overlays: warm cream on left + amber glow on right */}
-          <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#FFF8E7]/95 via-[#FFF8E7]/65 via-40% to-transparent" />
-          <div className="absolute inset-0 z-10 bg-gradient-to-l from-[#FFE082]/25 to-transparent" />
+          {/* Mobile gradient: dogs visible in top 55%, cream fades in below */}
+          <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent from-[0%] via-[#FFF8E7]/55 via-[55%] to-[#FFF8E7]/96 sm:hidden" />
 
-          {/* Hero text */}
-          {/* Hero text */}
-          <div className="relative z-20 flex h-full max-w-lg flex-col justify-center px-8 py-10">
+          {/* Desktop gradients: warm cream on left + amber glow on right */}
+          <div className="absolute inset-0 z-10 hidden bg-gradient-to-r from-[#FFF8E7]/95 via-[#FFF8E7]/65 via-40% to-transparent sm:block" />
+          <div className="absolute inset-0 z-10 hidden bg-gradient-to-l from-[#FFE082]/25 to-transparent sm:block" />
+
+          {/* Hero text — sits in lower-third on mobile (pb-36 clears wave+dogs), centred on desktop */}
+          <div className="relative z-20 flex h-full max-w-lg flex-col justify-end pb-36 px-8 sm:justify-center sm:pb-0 sm:py-10">
             <span className="inline-flex w-fit items-center rounded-full border border-[#E7C56F] bg-white px-4 py-1.5 text-xs font-semibold text-[#8B5E00] shadow-sm">
               🐾 India&apos;s #1 Dog Community
             </span>
