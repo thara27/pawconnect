@@ -33,7 +33,7 @@ export default async function Home() {
               🐾 India&apos;s #1 Dog Community
             </span>
 
-            <h1 className="mt-5 max-w-[520px] font-fraunces text-[2.8rem] font-black leading-[1.1] text-ink">
+            <h1 className="mt-4 max-w-[520px] font-fraunces text-[2rem] font-black leading-[1.1] text-ink sm:text-[2.8rem]">
               Where Every <span className="italic text-brand">Paw</span> Finds Its Pack
             </h1>
 
@@ -41,7 +41,7 @@ export default async function Home() {
               Connect with dog owners, find trusted vets, book grooming and training &mdash; all in one place. Powered by AI to understand your dog&apos;s unique needs.
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-10 flex flex-wrap gap-3 sm:mt-6">
               <Link href="/search" className="btn btn-primary">
                 Explore Services
               </Link>
