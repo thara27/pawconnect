@@ -1,16 +1,20 @@
 import Link from "next/link";
 
 type Props = {
-  emoji: string;
+  emoji?: string;
   title: string;
   description: string;
+  /** Link-based CTA — navigates to a route */
   cta?: {
     label: string;
     href: string;
   };
+  /** Callback-based CTA — fires an action in the same page */
+  actionLabel?: string;
+  onAction?: () => void;
 };
 
-export default function EmptyState({ emoji, title, description, cta }: Props) {
+export default function EmptyState({ emoji = "🐾", title, description, cta, actionLabel, onAction }: Props) {
   return (
     <div className="rounded-2xl border-2 border-dashed border-border bg-white px-6 py-12 text-center">
       <p className="text-5xl" aria-hidden="true">{emoji}</p>
@@ -20,6 +24,11 @@ export default function EmptyState({ emoji, title, description, cta }: Props) {
         <Link href={cta.href} className="btn btn-primary mt-5">
           {cta.label}
         </Link>
+      )}
+      {actionLabel && onAction && (
+        <button type="button" onClick={onAction} className="btn btn-primary mt-5">
+          {actionLabel}
+        </button>
       )}
     </div>
   );
