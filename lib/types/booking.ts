@@ -47,6 +47,7 @@ export type TimeSlot = {
 export type NotificationType =
   | "booking_request"
   | "booking_confirmed"
+  | "booking_completed"
   | "booking_cancelled"
   | "system"
   | string;

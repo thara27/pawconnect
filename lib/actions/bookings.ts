@@ -494,6 +494,16 @@ export async function updateBookingStatus(
     });
   }
 
+  if (status === "completed") {
+    await createNotification({
+      user_id: booking.pet_owner_id,
+      title: "Service completed ⭐",
+      message: `${profile.business_name} marked your booking on ${booking.booking_date} as completed. Leave a review!`,
+      type: "booking_completed",
+      booking_id: booking.id,
+    });
+  }
+
   if (status === "cancelled") {
     await createNotification({
       user_id: booking.pet_owner_id,

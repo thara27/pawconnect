@@ -79,9 +79,14 @@ export default function LoginPage() {
         </div>
 
         <div className="form-group">
-          <label htmlFor="password" className="form-label">
-            Password
-          </label>
+          <div className="flex items-center justify-between">
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
+            <Link href="/forgot-password" className="text-xs font-semibold text-brand hover:underline">
+              Forgot password?
+            </Link>
+          </div>
           <input
             id="password"
             name="password"
@@ -128,6 +133,13 @@ export default function LoginPage() {
         New to PawConnect?{" "}
         <Link href="/signup" className="font-semibold text-brand underline">
           Create an account
+        </Link>
+      </p>
+
+      <p className="mt-3 text-sm text-muted">
+        Didn&apos;t get a confirmation email?{" "}
+        <Link href="/resend-verification" className="font-semibold text-brand underline">
+          Resend it
         </Link>
       </p>
     </>

@@ -18,6 +18,7 @@ type NotificationsBellProps = {
 function iconForType(type: string): string {
   if (type === "booking_request") return "📝";
   if (type === "booking_confirmed") return "✅";
+  if (type === "booking_completed") return "⭐";
   if (type === "booking_cancelled") return "❌";
   return "🔔";
 }
